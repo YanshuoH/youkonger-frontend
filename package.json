@@ -1,0 +1,9 @@
+{
+  "name": "youkonger-fe",
+  "version": "0.0.1",
+  "description": "Youkonger frontend react implementation",
+  "main": "src/index.js",
+  "repository": "https://github.com/YanshuoH/youkonger-frontend.git",
+  "author": "YanshuoH",
+  "license": "MIT"
+}
