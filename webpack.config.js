@@ -61,12 +61,12 @@ module.exports = {
   postcss: [autoprefixer],
   plugins: [
     new webpack.DefinePlugin({
-      DEBUG: process.env.NODE_ENV !== 'production'
+      __DEBUG__: process.env.NODE_ENV !== 'prod'
     }),
     // new ExtractTextPlugin('weui.min.css'),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html')
-    }),
+    })
   ]
 };
