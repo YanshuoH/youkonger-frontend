@@ -56,6 +56,10 @@ module.exports = {
         test: /\.(png|jpg|svg)$/,
         loader: 'url?limit=25000'
       },
+      {
+        test: /\.woff|\.woff2|\.svg|.eot|\.ttf/,
+        loader: 'file',
+      },
     ]
   },
   postcss: [autoprefixer],
@@ -63,7 +67,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEBUG__: process.env.NODE_ENV !== 'prod'
     }),
-    // new ExtractTextPlugin('weui.min.css'),
+    new ExtractTextPlugin('weui.min.css'),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html')
