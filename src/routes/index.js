@@ -1,9 +1,10 @@
 import React from 'react';
-import { Route, IndexRedirect, Redirect } from 'react-router';
-import Home from '../components/Home';
+import { Route, Redirect } from 'react-router';
+import Home from '../pages/Home/index';
+import Layout from '../containers/Layout';
 
 export default () => (
-  <Route>
+  <Route component={Layout}>
     <Route path="/" component={Home} />
     <Redirect from="*" to="/" />
   </Route>
