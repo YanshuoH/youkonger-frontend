@@ -1,0 +1,35 @@
+@import '../../styles/colors';
+
+@stepper-size: 23px;
+.yk-stepper-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+
+  .yk-stepper-item {
+    flex: 1;
+    text-align: center;
+
+    .yk-stepper-circle {
+      display: inline-block;
+      border-radius: 50%;
+      width: @stepper-size;
+      height: @stepper-size;
+      border: 1px solid @wechat-green;
+      color: @wechat-green;
+
+      &.checked {
+        background-color: @wechat-green;
+        color: @white;
+      }
+    }
+  }
+
+  .yk-stepper-line {
+    flex: 1;
+    border-top: 1px solid @gainsboro;
+    margin-top: @stepper-size / 2;
+  }
+}
+
