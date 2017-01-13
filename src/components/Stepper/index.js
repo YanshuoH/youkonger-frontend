@@ -18,12 +18,12 @@ export default class Stepper extends React.PureComponent {
         </div>
       );
       if (i < this.props.number) {
-        items.push(<div className="yk-stepper-line" />);
+        items.push(<div className="yk-stepper-line" key={key++} />);
       }
     }
 
     return (
-      <div className="yk-stepper-container">
+      <div className={classnames('yk-stepper-container', this.props.className)}>
         {items}
       </div>
     );
@@ -38,5 +38,6 @@ Stepper.propTypes = {
   /**
    * Current step
    */
-  step: PropTypes.number.isRequired
+  step: PropTypes.number.isRequired,
+  className: PropTypes.string,
 };
