@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import './style.less';
 
 class Week extends React.PureComponent {
@@ -16,11 +17,25 @@ class Week extends React.PureComponent {
         date
       };
 
+      let isSelected = false;
+      for (let j = 0; j < this.props.selected.length; j++) {
+        if (this.props.selected[j].isSame(day.date)) {
+          isSelected = true;
+          break;
+        }
+      }
+      const klass = classnames(
+        'day',
+        { today: day.isToday },
+        { 'different-month': !day.isCurrentMonth },
+        { selected: isSelected }
+      );
+
       days.push(
         <span
           key={day.date.toString()}
-          className={'day' + (day.isToday ? ' today' : '') + (day.isCurrentMonth ? '' : ' different-month') + (day.date.isSame(this.props.selected) ? ' selected' : '')}
-          onClick={() => {}}
+          className={klass}
+          onClick={() => this.props.select(day.date)}
         >
           {day.number}
         </span>
@@ -30,7 +45,7 @@ class Week extends React.PureComponent {
     }
 
     return (
-      <div className="week" key={days[0].toString()}>
+      <div className="week">
         {days}
       </div>
     );
@@ -40,7 +55,11 @@ class Week extends React.PureComponent {
 Week.propTypes = {
   month: PropTypes.object,
   date: PropTypes.object,
-  selected: PropTypes.object,
+  selected: PropTypes.arrayOf(PropTypes.object),
+  /**
+   * function from Calendar
+   */
+  select: PropTypes.func.isRequired,
 };
 
 export default Week;

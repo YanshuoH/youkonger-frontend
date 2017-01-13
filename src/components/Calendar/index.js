@@ -9,8 +9,12 @@ class Calendar extends React.Component {
     super(props);
 
     this.state = {
-      month: moment(),
+      // use defined month, or use now
+      month: this.props.definedMonth ? this.props.definedMonth : moment(),
     };
+    this.previous = this.previous.bind(this);
+    this.next = this.next.bind(this);
+    this.select = this.select.bind(this);
   }
 
   previous() {
@@ -26,7 +30,9 @@ class Calendar extends React.Component {
   }
 
   select(day) {
-    this.props.selected = day.date;
+    // transfer selected day for parent component handling
+    this.props.select(day);
+    // force update
     this.forceUpdate();
   }
 
@@ -61,7 +67,7 @@ class Calendar extends React.Component {
 
   render() {
     return (
-      <div className="calendar">
+      <div className="yk-calendar">
         <div className="header">
           <i className="fa fa-angle-left" onClick={this.previous} />
           {this.renderMonthLabel()}
@@ -75,7 +81,15 @@ class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
-  selected: PropTypes.object,
+  /**
+   * Array of moment object, could be a length of zero
+   */
+  selected: PropTypes.arrayOf(PropTypes.object).isRequired,
+  definedMonth: PropTypes.object,
+  /**
+   * @param day {Moment} moment object when selected
+   */
+  select: PropTypes.func.isRequired,
 };
 
 export default Calendar;
