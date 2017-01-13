@@ -11,8 +11,9 @@ module.exports = {
     vendor: ['react']
   },
   output: {
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
+  devtool: 'source-map',
   devServer: {
     hot: true,
     host: '0.0.0.0',
@@ -25,7 +26,8 @@ module.exports = {
       '/api/**': {
         target: 'http://localhost:8111'
       }
-    }
+    },
+    historyApiFallback: true
   },
   module: {
     loaders: [
