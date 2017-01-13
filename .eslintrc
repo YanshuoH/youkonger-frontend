@@ -1,5 +1,4 @@
 {
-  "parser": "babel-eslint",
   "extends": "airbnb",
   "rules": {
     "comma-dangle": 0,
@@ -12,7 +11,17 @@
     "react/forbid-prop-types": 0,
     "react/require-default-props": 0,
     "react/prefer-stateless-function": 0,
-    "no-plusplus": 0
+    "no-plusplus": 0,
+    "jsx-a11y/no-static-element-interactions": 0
+  },
+  "plugins": [
+    "react", "import"
+  ],
+  "settings": {
+    "import/parser": "babel-eslint",
+    "import/resolve": {
+      "moduleDirectory": ["node_modules"]
+    }
   },
   "globals": {
     "document": true,

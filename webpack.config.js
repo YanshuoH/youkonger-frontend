@@ -11,8 +11,7 @@ module.exports = {
     vendor: ['react']
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: './bundle.js'
+    path: path.resolve(__dirname, 'dist')
   },
   devServer: {
     hot: true,
