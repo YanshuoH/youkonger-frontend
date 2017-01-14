@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import {
   CellsTitle,
+  Button,
 } from 'react-weui';
 import Calendar from '../../components/Calendar';
 import './style.less';
 import {
   selectDate,
+  nextStep,
+  previousStep,
 } from '../../redux/actions/creation';
 
 const mapStateToProps = state => ({
@@ -34,6 +37,20 @@ class Step2 extends React.Component {
           definedMonth={this.state.now}
           selected={this.props.selected}
         />
+        <div className="yk-btn">
+          <Button
+            onClick={() => { this.props.dispatch(nextStep()); }}
+            disabled={this.props.selected.length === 0}
+          >
+            下一步
+          </Button>
+          <Button
+            type="default"
+            onClick={() => { this.props.dispatch(previousStep()); }}
+          >
+            后退
+          </Button>
+        </div>
       </div>
     );
   }

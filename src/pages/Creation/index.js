@@ -7,13 +7,9 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import './style.less';
-import {
-  nextStep,
-  previousStep,
-} from '../../redux/actions/creation';
 
 const mapStateToProps = state => ({
-  step: state.event.get('creating').get('step')
+  step: state.event.get('creating').get('step'),
 });
 class Creation extends React.Component {
   get content() {
@@ -28,28 +24,10 @@ class Creation extends React.Component {
   }
 
   render() {
-    let previousBtn = null;
-    if (this.props.step > Step.Step1) {
-      previousBtn = (
-        <Button
-          type="default"
-          onClick={() => { this.props.dispatch(previousStep()); }}
-        >
-          后退
-        </Button>
-      );
-    }
-
     return (
       <div className="yk-creation">
         <Stepper number={3} step={this.props.step} className="" />
         {this.content}
-        <div className="yk-btn">
-          <Button onClick={() => { this.props.dispatch(nextStep()); }}>
-            下一步
-          </Button>
-          {previousBtn}
-        </div>
       </div>
     );
   }
