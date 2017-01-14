@@ -27,6 +27,9 @@ class Creation extends React.Component {
   }
 
   render() {
+    const previousBtn = this.props.step > Step.Step1 ?
+      (<Button type="default">后退</Button>) : null;
+
     return (
       <div className="yk-creation">
         <Stepper number={3} step={this.props.step} className="" />
@@ -35,6 +38,7 @@ class Creation extends React.Component {
           <Button onClick={() => { this.props.dispatch(nextStep()); }}>
             下一步
           </Button>
+          {previousBtn}
         </div>
       </div>
     );
