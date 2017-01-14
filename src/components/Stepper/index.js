@@ -10,7 +10,7 @@ export default class Stepper extends React.PureComponent {
 
     for (let i = 1; i <= this.props.number; i++) {
       const item = i < this.props.step ?
-        (<Icon value="success" />) : (<div className="yk-stepper-circle">{i}</div>)
+        (<Icon value="success" />) : (<div className="yk-stepper-circle">{i}</div>);
 
       items.push(
         <div className="yk-stepper-item" key={key++}>

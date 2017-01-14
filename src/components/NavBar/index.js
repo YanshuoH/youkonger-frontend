@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
-import FontAwesome from 'react-fontawesome';
+import { Icon } from 'react-weui';
 import './style.less';
 
 export default class NavBar extends React.PureComponent {
   render() {
     return (
       <div className="yk-navbar">
-        <FontAwesome name="rocket" size="2x" spin />
+        <Icon value="loading" />
         {this.props.children}
       </div>
     );
