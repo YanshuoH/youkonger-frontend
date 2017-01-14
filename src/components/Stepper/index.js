@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import { Icon } from 'react-weui';
 import './style.less';
 
 export default class Stepper extends React.PureComponent {
@@ -8,13 +9,12 @@ export default class Stepper extends React.PureComponent {
     const items = [];
 
     for (let i = 1; i <= this.props.number; i++) {
-      const circleClass = classnames('yk-stepper-circle', {
-        checked: i < this.props.step
-      });
+      const item = i < this.props.step ?
+        (<Icon value="success" />) : (<div className="yk-stepper-circle">{i}</div>)
 
       items.push(
         <div className="yk-stepper-item" key={key++}>
-          <div className={circleClass}>{i}</div>
+          {item}
         </div>
       );
       if (i < this.props.number) {
