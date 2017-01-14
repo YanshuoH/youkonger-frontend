@@ -19,20 +19,8 @@ export function checkTitle(value) {
 }
 
 export function nextStep() {
-  return (dispatch, getState) => {
-    // get current step and dispatch correspond action
-    const step = getState().event.get('creating').get('step');
-    // step 1
-    if (step === Step.Step1) {
-      // check
-      dispatch(checkTitle(getState().event.get('creating').get('title')));
-      // step 2
-    } else if (step === Step.Step2) {
-
-    }
-    dispatch({
-      type: CREATION_NEXT_STEP,
-    });
+  return {
+    type: CREATION_NEXT_STEP,
   };
 }
 
@@ -64,6 +52,12 @@ export function selectDate(day) {
       }
     });
   };
+}
+
+export function fetchEventUpsertApi() {
+  return (dispatch, getState) => {
+    
+  }
 }
 
 export function changeTitle(value) {
