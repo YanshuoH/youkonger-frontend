@@ -15,7 +15,7 @@ import {
 } from '../../redux/actions/edit';
 
 const mapStateToProps = state => ({
-  selected: state.event.get('creating').get('selected').toArray(),
+  selected: state.event.get('creating').get('eventDateList'),
   errMsg: state.event.get('creating').get('errMsg'),
   fetching: state.event.get('creating').get('fetching')
 });
@@ -34,18 +34,22 @@ class Step2 extends React.Component {
   render() {
     const nextBtnContent = this.props.fetching ?
       (<span><Icon value="loading" />发送中</span>) : ('下一步');
+
+    // flatten the selected list
+    const selectedDays = this.props.selected.map(eventDate => eventDate.get('date'));
+
     return (
       <div className="yk-step-container">
         <CellsTitle>选择日期 (多选)</CellsTitle>
         <Calendar
           select={this.calendarSelectFunc}
           definedMonth={this.state.now}
-          selected={this.props.selected}
+          selected={selectedDays.toArray()}
         />
         <div className="yk-btn">
           <Button
             onClick={() => { this.props.dispatch(fetchEventUpsertApi()); }}
-            disabled={this.props.fetching || this.props.selected.length === 0}
+            disabled={this.props.fetching || this.props.selected.size === 0}
           >
             {nextBtnContent}
           </Button>
@@ -62,7 +66,7 @@ class Step2 extends React.Component {
 }
 
 Step2.propTypes = {
-  selected: PropTypes.array.isRequired,
+  selected: PropTypes.object,
   fetching: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
 };

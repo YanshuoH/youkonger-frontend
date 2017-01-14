@@ -1,3 +1,6 @@
+import moment from 'moment';
+import { Map } from 'immutable';
+import { browserHistory } from 'react-router';
 import {
   API_EVENT_UPSERT,
   CREATION_NEXT_STEP,
@@ -37,34 +40,47 @@ export function previousStep() {
 export function selectDate(day) {
   return (dispatch, getState) => {
     // retrieve all selected dates
-    const selectedDates = getState().event.get('creating').get('selected');
+    const selectedDates = getState().event.get('creating').get('eventDateList');
     // make a copy
     let result = selectedDates;
 
     // search for date
-    const idx = selectedDates.findIndex(date => day.isSame(date));
+    const idx = selectedDates.findIndex(date => day.isSame(date.get('date')));
     if (idx > -1) {
       result = result.delete(idx);
     } else {
-      result = result.push(day);
+      result = result.push(Map({
+        date: day,
+      }));
     }
 
     dispatch({
       type: CREATION_CALENDAR_SELECT_DATE,
       payload: {
-        selected: result,
+        eventDateList: result,
       }
     });
   };
 }
 
+/**
+ * Redirect to event admin url, turn to step 3
+ */
 function fetchEventUpsertApiSuccess(data) {
-  return {
-    type: CREATION_EVENT_UPSERT_SUCCESS,
-    payload: {
-      fetching: false,
-      data,
+  return (dispatch) => {
+    browserHistory.push(`/event/${data.uuid}/admin/${data.hash}`);
+    dispatch(nextStep());
+    // parse timeInUnix and add date field for eventDates
+    for (let i = 0; i < data.eventDateList.length; i++) {
+      data.eventDateList[i].date = moment.unix(data.eventDateList[i].timeInUnix)
     }
+    dispatch({
+      type: CREATION_EVENT_UPSERT_SUCCESS,
+      payload: {
+        fetching: false,
+        data,
+      }
+    });
   };
 }
 
@@ -86,11 +102,9 @@ export function fetchEventUpsertApi() {
       title: creatingData.get('title'),
       description: creatingData.get('description'),
       location: creatingData.get('location'),
-      get eventDateList() {
-        return creatingData.get('selected').map(date => ({
-          timeInUnix: date.unix()
-        }));
-      }
+      eventDateList: creatingData.get('eventDateList').map(date => ({
+        timeInUnix: date.get('date').unix()
+      })),
     }
     dispatch({
       type: CREATION_EVENT_UPSERT_REQUEST,

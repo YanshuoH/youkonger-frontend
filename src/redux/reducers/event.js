@@ -1,5 +1,6 @@
 import {
-  fromJS
+  fromJS,
+  Map,
 } from 'immutable';
 import {
   Step,
@@ -20,10 +21,12 @@ const initialState = fromJS({
   description: '',
   location: '',
   creating: {
+    uuid: '',
+    hash: '',
     title: '',
     description: '',
     location: '',
-    selected: [],
+    eventDateList: [],
     step: Step.Step1,
     titleErr: false,
     virgin: true,
@@ -41,7 +44,7 @@ function creatingReducer(state = initialState.get('creating'), action) {
     case CREATION_PREVIOUS_STEP:
       return state.set('step', state.get('step') - 1);
     case CREATION_CALENDAR_SELECT_DATE:
-      return state.set('selected', action.payload.selected);
+      return state.set('eventDateList', action.payload.eventDateList);
     case CREATION_CHANGE_TITLE:
       return state
         .set('title', action.payload.value)
@@ -58,11 +61,13 @@ function creatingReducer(state = initialState.get('creating'), action) {
     case CREATION_STEP1_TITLE_ERROR:
       return state.set('titleErr', action.payload.err);
     case CREATION_EVENT_UPSERT_REQUEST:
-      return state.set('fetching', action.payload.fetching);
-    case CREATION_EVENT_UPSERT_SUCCESS:
-      return state.set('fetching', action.payload.fetching);
     case CREATION_EVENT_UPSERT_FAILURE:
       return state.set('fetching', action.payload.fetching);
+    case CREATION_EVENT_UPSERT_SUCCESS: {
+      let newState = state.set('fetching', action.payload.fetching);
+      newState = newState.merge(fromJS(action.payload.data));
+      return newState;
+    }
     default:
       return state;
   }

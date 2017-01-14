@@ -13,14 +13,17 @@ const mapStateToProps = state => ({
 });
 class Creation extends React.Component {
   get content() {
-    switch (this.props.step) {
-      case Step.Step2:
-        return (<Step2 />);
-      case Step.Step3:
-        return (<Step3 />);
-      default:
-        return (<Step1 />);
+    if (this.props.step === Step.Step1) {
+      return (<Step1 />);
     }
+    if (this.props.step === Step.Step2) {
+      return (<Step2 />);
+    }
+    if (this.props.step === Step.Step3) {
+      return (<Step3 />);
+    }
+
+    return null;
   }
 
   render() {
