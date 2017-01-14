@@ -1,8 +1,14 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Toast } from 'react-weui';
 import Navbar from '../components/NavBar';
 import './style.less';
 
-export default class Layout extends React.PureComponent {
+const mapStateToProps = state => ({
+  toastMsg: state.toast.message,
+  toastShow: state.toast.show,
+});
+class Layout extends React.PureComponent {
   render() {
     return (
       <div>
@@ -12,11 +18,21 @@ export default class Layout extends React.PureComponent {
         <div className="yk-container">
           {this.props.children}
         </div>
+        <Toast
+          show={this.props.toastShow}
+          className="yk-toast"
+        >
+          {this.props.toastMsg}
+        </Toast>
       </div>
     );
   }
 }
 
 Layout.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element,
+  toastMsg: PropTypes.string,
+  toastShow: PropTypes.bool,
 };
+
+export default connect(mapStateToProps)(Layout);

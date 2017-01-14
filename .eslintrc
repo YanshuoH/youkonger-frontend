@@ -28,6 +28,7 @@
     "document": true,
     "window": true,
     "__DEBUG__": true,
-    "__INITIAL_STATE__": true
+    "__INITIAL_STATE__": true,
+    "fetch": true
   }
 }
