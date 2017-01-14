@@ -68,7 +68,7 @@ export function selectDate(day) {
  */
 function fetchEventUpsertApiSuccess(data) {
   return (dispatch) => {
-    browserHistory.push(`/event/${data.uuid}/admin/${data.hash}`);
+    browserHistory.push(`/event/${data.uuid}`);
     dispatch(nextStep());
     // parse timeInUnix and add date field for eventDates
     for (let i = 0; i < data.eventDateList.length; i++) {
@@ -99,11 +99,14 @@ export function fetchEventUpsertApi() {
     const creatingData = getState().event.get('creating');
     // make post data
     const post = {
+      uuid: creatingData.get('uuid'),
+      hash: creatingData.get('hash'),
       title: creatingData.get('title'),
       description: creatingData.get('description'),
       location: creatingData.get('location'),
       eventDateList: creatingData.get('eventDateList').map(date => ({
-        timeInUnix: date.get('date').unix()
+        timeInUnix: date.get('date').unix(),
+        uuid: date.get('uuid'),
       })),
     }
     dispatch({

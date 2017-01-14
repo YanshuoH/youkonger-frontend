@@ -8,7 +8,7 @@ export default () => (
   <Route component={Layout}>
     <Route path="/" component={Home} />
     <Route path="/create" component={Edit} />
-    <Route path="/event/:uuid/admin/:hash" component={Edit} />
+    <Route path="/event/:uuid" component={Edit} />
     <Redirect from="*" to="/" />
   </Route>
 );
