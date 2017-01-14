@@ -8,7 +8,8 @@ import Step2 from './Step2';
 import Step3 from './Step3';
 import './style.less';
 import {
-  nextStep
+  nextStep,
+  previousStep,
 } from '../../redux/actions';
 
 const mapStateToProps = state => ({
@@ -27,8 +28,17 @@ class Creation extends React.Component {
   }
 
   render() {
-    const previousBtn = this.props.step > Step.Step1 ?
-      (<Button type="default">后退</Button>) : null;
+    let previousBtn = null;
+    if (this.props.step > Step.Step1) {
+      previousBtn = (
+        <Button
+          type="default"
+          onClick={() => { this.props.dispatch(previousStep()); }}
+        >
+          后退
+        </Button>
+      );
+    }
 
     return (
       <div className="yk-creation">

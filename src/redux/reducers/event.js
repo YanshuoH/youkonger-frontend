@@ -4,6 +4,7 @@ import {
 import {
   Step,
   NEXT_STEP,
+  PREVIOUS_STEP,
 } from '../../constants';
 
 const initialState = fromJS({
@@ -19,6 +20,8 @@ function creatingReducer(state = initialState.get('creating'), action) {
   switch (action.type) {
     case NEXT_STEP:
       return state.set('step', state.get('step') + 1);
+    case PREVIOUS_STEP:
+      return state.set('step', state.get('step') - 1);
     default:
       return state;
   }
@@ -26,7 +29,8 @@ function creatingReducer(state = initialState.get('creating'), action) {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case NEXT_STEP: {
+    case NEXT_STEP:
+    case PREVIOUS_STEP: {
       return state.set('creating', creatingReducer(state.get('creating'), action));
     }
     default:
