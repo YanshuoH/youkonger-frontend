@@ -1,14 +1,35 @@
-import { Step } from '../../constants';
+import {
+  fromJS
+} from 'immutable';
+import {
+  Step,
+  NEXT_STEP,
+} from '../../constants';
 
-const initialState = {
+const initialState = fromJS({
   title: '',
   description: '',
   location: '',
   creating: {
     step: Step.Step1
   }
-};
+});
 
-export default function reducer(state = initialState) {
-  return state;
+function creatingReducer(state = initialState.get('creating'), action) {
+  switch (action.type) {
+    case NEXT_STEP:
+      return state.set('step', state.get('step') + 1);
+    default:
+      return state;
+  }
+}
+
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
+    case NEXT_STEP: {
+      return state.set('creating', creatingReducer(state.get('creating'), action));
+    }
+    default:
+      return state;
+  }
 }
