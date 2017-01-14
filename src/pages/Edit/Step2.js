@@ -4,17 +4,20 @@ import moment from 'moment';
 import {
   CellsTitle,
   Button,
+  Icon,
 } from 'react-weui';
 import Calendar from '../../components/Calendar';
 import './style.less';
 import {
   selectDate,
-  nextStep,
+  fetchEventUpsertApi,
   previousStep,
-} from '../../redux/actions/creation';
+} from '../../redux/actions/edit';
 
 const mapStateToProps = state => ({
-  selected: state.event.get('creating').get('selected').toArray()
+  selected: state.event.get('creating').get('selected').toArray(),
+  errMsg: state.event.get('creating').get('errMsg'),
+  fetching: state.event.get('creating').get('fetching')
 });
 class Step2 extends React.Component {
   constructor() {
@@ -29,6 +32,8 @@ class Step2 extends React.Component {
   }
 
   render() {
+    const nextBtnContent = this.props.fetching ?
+      (<span><Icon value="loading" />发送中</span>) : ('下一步');
     return (
       <div className="yk-step-container">
         <CellsTitle>选择日期 (多选)</CellsTitle>
@@ -39,10 +44,10 @@ class Step2 extends React.Component {
         />
         <div className="yk-btn">
           <Button
-            onClick={() => { this.props.dispatch(nextStep()); }}
-            disabled={this.props.selected.length === 0}
+            onClick={() => { this.props.dispatch(fetchEventUpsertApi()); }}
+            disabled={this.props.fetching || this.props.selected.length === 0}
           >
-            下一步
+            {nextBtnContent}
           </Button>
           <Button
             type="default"
@@ -58,6 +63,7 @@ class Step2 extends React.Component {
 
 Step2.propTypes = {
   selected: PropTypes.array.isRequired,
+  fetching: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
 };
 

@@ -19,7 +19,7 @@ import {
   changeDescription,
   changeLocation,
   checkTitle,
-} from '../../redux/actions/creation';
+} from '../../redux/actions/edit';
 
 const mapStateToProps = state => ({
   title: state.event.get('creating').get('title'),

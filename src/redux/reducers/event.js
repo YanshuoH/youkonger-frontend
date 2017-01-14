@@ -10,6 +10,9 @@ import {
   CREATION_CHANGE_DESCRIPTION,
   CREATION_CHANGE_LOCATION,
   CREATION_STEP1_TITLE_ERROR,
+  CREATION_EVENT_UPSERT_REQUEST,
+  CREATION_EVENT_UPSERT_SUCCESS,
+  CREATION_EVENT_UPSERT_FAILURE,
 } from '../../constants';
 
 const initialState = fromJS({
@@ -18,12 +21,14 @@ const initialState = fromJS({
   location: '',
   creating: {
     title: '',
-    virgin: true,
-    titleErr: false,
     description: '',
     location: '',
+    selected: [],
     step: Step.Step1,
-    selected: []
+    titleErr: false,
+    virgin: true,
+    fetching: false,
+    errMsg: '',
   }
 });
 
@@ -52,6 +57,12 @@ function creatingReducer(state = initialState.get('creating'), action) {
         .set('virgin', false);
     case CREATION_STEP1_TITLE_ERROR:
       return state.set('titleErr', action.payload.err);
+    case CREATION_EVENT_UPSERT_REQUEST:
+      return state.set('fetching', action.payload.fetching);
+    case CREATION_EVENT_UPSERT_SUCCESS:
+      return state.set('fetching', action.payload.fetching);
+    case CREATION_EVENT_UPSERT_FAILURE:
+      return state.set('fetching', action.payload.fetching);
     default:
       return state;
   }
@@ -65,7 +76,10 @@ export default function reducer(state = initialState, action) {
     case CREATION_CHANGE_TITLE:
     case CREATION_CHANGE_DESCRIPTION:
     case CREATION_CHANGE_LOCATION:
-    case CREATION_STEP1_TITLE_ERROR: {
+    case CREATION_STEP1_TITLE_ERROR:
+    case CREATION_EVENT_UPSERT_REQUEST:
+    case CREATION_EVENT_UPSERT_SUCCESS:
+    case CREATION_EVENT_UPSERT_FAILURE: {
       return state.set('creating', creatingReducer(state.get('creating'), action));
     }
     default:
