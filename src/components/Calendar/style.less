@@ -1,6 +1,7 @@
 @import '../../styles/colors';
 @import '../../styles/mixins';
 
+
 .yk-calendar {
   @bg-color: @white-smoke;
   @plate-color: @white;
@@ -27,22 +28,35 @@
     align-items: center;
     justify-content: center;
 
-    > i {
-      font-size: 30px;
-      font-weight: bold;
+    > .arrow {
       flex: 1;
+      position: relative;
       cursor: pointer;
+      @arrow-size: 12px;
+      @arrow-weight: 4px;
 
-      &.fa-angle-left {
-        margin-left: @spacing;
-        color: @secondary-font-color;
-        text-align: left;
+      &.arrow-left {
+        &:after {
+          .setArrow(left, @arrow-size, @secondary-font-color, @arrow-weight);
+          content: " ";
+          position: absolute;
+          top: 50%;
+          margin-top: -(@arrow-size + @arrow-weight) / 2;
+          left: @spacing;
+          display: inline-block;
+        }
       }
 
-      &.fa-angle-right {
-        margin-right: @spacing;
-        color: @secondary-font-color;
-        text-align: right;
+      &.arrow-right {
+        &:after {
+          .setArrow(right, @arrow-size, @secondary-font-color, @arrow-weight);
+          content: " ";
+          position: absolute;
+          top: 50%;
+          margin-top: -(@arrow-size + @arrow-weight) / 2;
+          right: @spacing;
+          display: inline-block;
+        }
       }
     }
 

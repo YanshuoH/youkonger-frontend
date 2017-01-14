@@ -69,9 +69,9 @@ class Calendar extends React.Component {
     return (
       <div className="yk-calendar">
         <div className="header">
-          <i className="fa fa-angle-left" onClick={this.previous} />
+          <span className="arrow arrow-left" onClick={this.previous} />
           {this.renderMonthLabel()}
-          <i className="fa fa-angle-right" onClick={this.next} />
+          <span className="arrow arrow-right" onClick={this.next} />
         </div>
         <DayNames />
         {this.renderWeeks()}
