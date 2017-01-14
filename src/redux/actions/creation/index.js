@@ -1,15 +1,38 @@
 import {
+  Step,
   CREATION_NEXT_STEP,
   CREATION_PREVIOUS_STEP,
   CREATION_CALENDAR_SELECT_DATE,
   CREATION_CHANGE_TITLE,
   CREATION_CHANGE_DESCRIPTION,
   CREATION_CHANGE_LOCATION,
+  CREATION_STEP1_TITLE_ERROR,
 } from '../../../constants';
 
-export function nextStep() {
+export function checkTitle(value) {
   return {
-    type: CREATION_NEXT_STEP
+    type: CREATION_STEP1_TITLE_ERROR,
+    payload: {
+      err: value === ''
+    }
+  };
+}
+
+export function nextStep() {
+  return (dispatch, getState) => {
+    // get current step and dispatch correspond action
+    const step = getState().event.get('creating').get('step');
+    // step 1
+    if (step === Step.Step1) {
+      // check
+      dispatch(checkTitle(getState().event.get('creating').get('title')));
+      // step 2
+    } else if (step === Step.Step2) {
+
+    }
+    dispatch({
+      type: CREATION_NEXT_STEP,
+    });
   };
 }
 

@@ -9,6 +9,7 @@ import {
   CREATION_CHANGE_TITLE,
   CREATION_CHANGE_DESCRIPTION,
   CREATION_CHANGE_LOCATION,
+  CREATION_STEP1_TITLE_ERROR,
 } from '../../constants';
 
 const initialState = fromJS({
@@ -17,6 +18,8 @@ const initialState = fromJS({
   location: '',
   creating: {
     title: '',
+    virgin: true,
+    titleErr: false,
     description: '',
     location: '',
     step: Step.Step1,
@@ -27,17 +30,28 @@ const initialState = fromJS({
 function creatingReducer(state = initialState.get('creating'), action) {
   switch (action.type) {
     case CREATION_NEXT_STEP:
-      return state.set('step', state.get('step') + 1);
+      return state
+        .set('step', state.get('step') + 1)
+        .set('titleErr', false);
     case CREATION_PREVIOUS_STEP:
       return state.set('step', state.get('step') - 1);
     case CREATION_CALENDAR_SELECT_DATE:
       return state.set('selected', action.payload.selected);
     case CREATION_CHANGE_TITLE:
-      return state.set('title', action.payload.value);
+      return state
+        .set('title', action.payload.value)
+        .set('titleErr', false)
+        .set('virgin', false);
     case CREATION_CHANGE_DESCRIPTION:
-      return state.set('description', action.payload.value);
+      return state
+        .set('description', action.payload.value)
+        .set('virgin', false);
     case CREATION_CHANGE_LOCATION:
-      return state.set('location', action.payload.value);
+      return state
+        .set('location', action.payload.value)
+        .set('virgin', false);
+    case CREATION_STEP1_TITLE_ERROR:
+      return state.set('titleErr', action.payload.err);
     default:
       return state;
   }
@@ -50,7 +64,8 @@ export default function reducer(state = initialState, action) {
     case CREATION_CALENDAR_SELECT_DATE:
     case CREATION_CHANGE_TITLE:
     case CREATION_CHANGE_DESCRIPTION:
-    case CREATION_CHANGE_LOCATION: {
+    case CREATION_CHANGE_LOCATION:
+    case CREATION_STEP1_TITLE_ERROR: {
       return state.set('creating', creatingReducer(state.get('creating'), action));
     }
     default:
