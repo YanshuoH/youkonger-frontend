@@ -3,9 +3,12 @@ import {
 } from 'immutable';
 import {
   Step,
-  NEXT_STEP,
-  PREVIOUS_STEP,
-  CALENDAR_SELECT_DATE,
+  CREATION_NEXT_STEP,
+  CREATION_PREVIOUS_STEP,
+  CREATION_CALENDAR_SELECT_DATE,
+  CREATION_CHANGE_TITLE,
+  CREATION_CHANGE_DESCRIPTION,
+  CREATION_CHANGE_LOCATION,
 } from '../../constants';
 
 const initialState = fromJS({
@@ -23,12 +26,18 @@ const initialState = fromJS({
 
 function creatingReducer(state = initialState.get('creating'), action) {
   switch (action.type) {
-    case NEXT_STEP:
+    case CREATION_NEXT_STEP:
       return state.set('step', state.get('step') + 1);
-    case PREVIOUS_STEP:
+    case CREATION_PREVIOUS_STEP:
       return state.set('step', state.get('step') - 1);
-    case CALENDAR_SELECT_DATE:
+    case CREATION_CALENDAR_SELECT_DATE:
       return state.set('selected', action.payload.selected);
+    case CREATION_CHANGE_TITLE:
+      return state.set('title', action.payload.value);
+    case CREATION_CHANGE_DESCRIPTION:
+      return state.set('description', action.payload.value);
+    case CREATION_CHANGE_LOCATION:
+      return state.set('location', action.payload.value);
     default:
       return state;
   }
@@ -36,9 +45,12 @@ function creatingReducer(state = initialState.get('creating'), action) {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case NEXT_STEP:
-    case PREVIOUS_STEP:
-    case CALENDAR_SELECT_DATE: {
+    case CREATION_NEXT_STEP:
+    case CREATION_PREVIOUS_STEP:
+    case CREATION_CALENDAR_SELECT_DATE:
+    case CREATION_CHANGE_TITLE:
+    case CREATION_CHANGE_DESCRIPTION:
+    case CREATION_CHANGE_LOCATION: {
       return state.set('creating', creatingReducer(state.get('creating'), action));
     }
     default:

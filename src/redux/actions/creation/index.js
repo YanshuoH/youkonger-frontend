@@ -1,18 +1,21 @@
 import {
-  NEXT_STEP,
-  PREVIOUS_STEP,
-  CALENDAR_SELECT_DATE,
+  CREATION_NEXT_STEP,
+  CREATION_PREVIOUS_STEP,
+  CREATION_CALENDAR_SELECT_DATE,
+  CREATION_CHANGE_TITLE,
+  CREATION_CHANGE_DESCRIPTION,
+  CREATION_CHANGE_LOCATION,
 } from '../../../constants';
 
 export function nextStep() {
   return {
-    type: NEXT_STEP
+    type: CREATION_NEXT_STEP
   };
 }
 
 export function previousStep() {
   return {
-    type: PREVIOUS_STEP
+    type: CREATION_PREVIOUS_STEP
   };
 }
 
@@ -32,10 +35,37 @@ export function selectDate(day) {
     }
 
     dispatch({
-      type: CALENDAR_SELECT_DATE,
+      type: CREATION_CALENDAR_SELECT_DATE,
       payload: {
         selected: result,
       }
     });
+  };
+}
+
+export function changeTitle(value) {
+  return {
+    type: CREATION_CHANGE_TITLE,
+    payload: {
+      value
+    }
+  };
+}
+
+export function changeDescription(value) {
+  return {
+    type: CREATION_CHANGE_DESCRIPTION,
+    payload: {
+      value
+    }
+  };
+}
+
+export function changeLocation(value) {
+  return {
+    type: CREATION_CHANGE_LOCATION,
+    payload: {
+      value
+    }
   };
 }
