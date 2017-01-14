@@ -10,7 +10,7 @@ import './style.less';
 import {
   nextStep,
   previousStep,
-} from '../../redux/actions';
+} from '../../redux/actions/creation';
 
 const mapStateToProps = state => ({
   step: state.event.get('creating').get('step')

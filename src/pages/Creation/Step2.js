@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import {
   CellsTitle,
 } from 'react-weui';
 import Calendar from '../../components/Calendar';
 import './style.less';
+import {
+  selectDate,
+} from '../../redux/actions/creation';
 
+const mapStateToProps = state => ({
+  selected: state.event.get('creating').get('selected').toArray()
+});
 class Step2 extends React.Component {
   constructor() {
     super();
     this.state = {
       now: moment(),
-      selected: [],
     };
     this.calendarSelectFunc = this.calendarSelectFunc.bind(this);
   }
   calendarSelectFunc(day) {
-    const selected = this.state.selected;
-    selected.push(day);
-    this.setState({
-      selected
-    });
+    this.props.dispatch(selectDate(day));
   }
 
   render() {
@@ -30,11 +32,16 @@ class Step2 extends React.Component {
         <Calendar
           select={this.calendarSelectFunc}
           definedMonth={this.state.now}
-          selected={this.state.selected}
+          selected={this.props.selected}
         />
       </div>
     );
   }
 }
 
-export default Step2;
+Step2.propTypes = {
+  selected: PropTypes.array.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps)(Step2);
