@@ -14,7 +14,7 @@ import './styles/app.less';
 moment.locale('zh-cn');
 
 const initialState = window.__INITIAL_STATE__;
-const store = configureStore(initialState);
+const store = configureStore(Object.assign({}, initialState, { event: window.__INITIAL_EVENT_STATE__ }));
 
 ReactDOM.render(
   <Root history={browserHistory} routes={makeRoutes()} store={store} />,
