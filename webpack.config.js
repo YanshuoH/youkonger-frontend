@@ -54,6 +54,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/assets/',
   },
   devtool: 'source-map',
   devServer: {
@@ -63,7 +64,6 @@ module.exports = {
       poll: 1000,
     },
     port: 8112,
-    publicPath: '/',
     proxy: {
       '/api/**': {
         target: 'http://localhost:8111'

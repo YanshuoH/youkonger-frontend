@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --progress",
+    "watch": "webpack --progress --colors --watch",
     "dist": "rm -rf dist && NODE_ENV=prod webpack"
   },
   "dependencies": {
