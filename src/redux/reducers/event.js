@@ -1,6 +1,5 @@
 import {
   fromJS,
-  Map,
 } from 'immutable';
 import {
   Step,

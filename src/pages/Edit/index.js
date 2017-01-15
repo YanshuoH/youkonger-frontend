@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'react-weui';
 import Stepper from '../../components/Stepper';
 import { Step } from '../../constants';
 import Step1 from './Step1';
@@ -27,9 +26,11 @@ class Creation extends React.Component {
   }
 
   render() {
+    const stepper = this.props.step < Step.Step3 ?
+      (<Stepper number={2} step={this.props.step} />) : null;
     return (
       <div className="yk-creation">
-        <Stepper number={3} step={this.props.step} className="" />
+        {stepper}
         {this.content}
       </div>
     );
@@ -38,7 +39,6 @@ class Creation extends React.Component {
 
 Creation.propTypes = {
   step: PropTypes.oneOf(Step.Order),
-  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(Creation);

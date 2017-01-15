@@ -72,7 +72,7 @@ function fetchEventUpsertApiSuccess(data) {
     dispatch(nextStep());
     // parse timeInUnix and add date field for eventDates
     for (let i = 0; i < data.eventDateList.length; i++) {
-      data.eventDateList[i].date = moment.unix(data.eventDateList[i].timeInUnix)
+      data.eventDateList[i].date = moment.unix(data.eventDateList[i].timeInUnix);
     }
     dispatch({
       type: CREATION_EVENT_UPSERT_SUCCESS,
@@ -108,7 +108,7 @@ export function fetchEventUpsertApi() {
         timeInUnix: date.get('date').unix(),
         uuid: date.get('uuid'),
       })),
-    }
+    };
     dispatch({
       type: CREATION_EVENT_UPSERT_REQUEST,
       payload: {
