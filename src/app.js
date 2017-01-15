@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { browserHistory } from 'react-router';
+import { fromJS } from 'immutable';
 import 'weui/dist/style/weui.min.css';
 import 'react-weui/lib/react-weui.min.css';
 
@@ -14,7 +15,12 @@ import './styles/app.less';
 moment.locale('zh-cn');
 
 const initialState = window.__INITIAL_STATE__;
-const store = configureStore(Object.assign({}, initialState, { event: window.__INITIAL_EVENT_STATE__ }));
+const store = configureStore(
+  Object.assign({},
+    initialState,
+    { event: fromJS(window.__INITIAL_EVENT_STATE__) }
+  )
+);
 
 ReactDOM.render(
   <Root history={browserHistory} routes={makeRoutes()} store={store} />,

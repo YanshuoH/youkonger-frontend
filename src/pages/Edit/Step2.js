@@ -15,9 +15,9 @@ import {
 } from '../../redux/actions/edit';
 
 const mapStateToProps = state => ({
-  selected: state.event.get('creating').get('eventDateList'),
-  errMsg: state.event.get('creating').get('errMsg'),
-  fetching: state.event.get('creating').get('fetching')
+  selected: state.create.get('eventDateList'),
+  errMsg: state.create.get('errMsg'),
+  fetching: state.create.get('fetching')
 });
 class Step2 extends React.Component {
   constructor() {

@@ -12,7 +12,7 @@ import {
 } from '../../redux/actions/edit';
 
 const mapStateToProps = state => ({
-  createdEvent: state.event.get('creating'),
+  createdEvent: state.create,
 });
 class Step3 extends React.Component {
 

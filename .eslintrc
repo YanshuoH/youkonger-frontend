@@ -2,7 +2,7 @@
   "extends": "airbnb",
   "rules": {
     "comma-dangle": 0,
-    "no-underscore-dangle": ["error", { "allow": ["__INITIAL_STATE__"] }],
+    "no-underscore-dangle": ["error", { "allow": ["__INITIAL_STATE__", "__INITIAL_EVENT_STATE__"] }],
     "no-console": ["error", { "allow": ["log", "info"] }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-unused-prop-types": 0,

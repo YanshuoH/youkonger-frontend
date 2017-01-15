@@ -8,7 +8,7 @@ import Step3 from './Step3';
 import './style.less';
 
 const mapStateToProps = state => ({
-  step: state.event.get('creating').get('step'),
+  step: state.create.get('step'),
 });
 class Creation extends React.Component {
   get content() {

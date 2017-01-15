@@ -40,7 +40,7 @@ export function previousStep() {
 export function selectDate(day) {
   return (dispatch, getState) => {
     // retrieve all selected dates
-    const selectedDates = getState().event.get('creating').get('eventDateList');
+    const selectedDates = getState().create.get('eventDateList');
     // make a copy
     let result = selectedDates;
 
@@ -96,7 +96,7 @@ function fetchEventUpsertApiFailure(error) {
 
 export function fetchEventUpsertApi() {
   return (dispatch, getState) => {
-    const creatingData = getState().event.get('creating');
+    const creatingData = getState().create;
     // make post data
     const post = {
       uuid: creatingData.get('uuid'),
