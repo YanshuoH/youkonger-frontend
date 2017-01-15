@@ -4,18 +4,20 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var isProd = process.env.NODE_ENV === 'prod';
 var plugins = [
   new webpack.DefinePlugin({
-    __DEBUG__: process.env.NODE_ENV !== 'prod'
+    __DEBUG__: !isProd
   }),
   new ExtractTextPlugin('weui.min.css'),
   new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
   new HtmlWebpackPlugin({
-    template: path.join(__dirname, 'src/index.html')
+    template: path.join(__dirname, 'src/index.html'),
+    hash: true,
   }),
   new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
 ];
-if (process.env.NODE_ENV === 'prod') {
+if (isProd) {
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     comments: /contain no comment/,
     // mangle: false,
