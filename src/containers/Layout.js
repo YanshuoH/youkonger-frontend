@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Toast } from 'react-weui';
-import Navbar from '../components/NavBar';
 import './style.less';
 
 const mapStateToProps = state => ({
@@ -12,9 +11,6 @@ class Layout extends React.PureComponent {
   render() {
     return (
       <div>
-        <Navbar>
-          <div>Something</div>
-        </Navbar>
         <div className="yk-container">
           {this.props.children}
         </div>

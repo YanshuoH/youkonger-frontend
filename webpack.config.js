@@ -4,14 +4,54 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var plugins = [
+  new webpack.DefinePlugin({
+    __DEBUG__: process.env.NODE_ENV !== 'prod'
+  }),
+  new ExtractTextPlugin('weui.min.css'),
+  new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+  new HtmlWebpackPlugin({
+    template: path.join(__dirname, 'src/index.html')
+  }),
+  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
+];
+if (process.env.NODE_ENV === 'prod') {
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    comments: /contain no comment/,
+    // mangle: false,
+    compress: {
+      sequences: false,  // join consecutive statemets with the “comma operator”
+      properties: false,  // optimize property access: a['foo'] → a.foo
+      dead_code: false,  // discard unreachable code
+      drop_debugger: false,  // discard “debugger” statements
+      unsafe: false, // some unsafe optimizations (see below)
+      conditionals: false,  // optimize if-s and conditional expressions
+      comparisons: false,  // optimize comparisons
+      evaluate: false,  // evaluate constant expressions
+      booleans: true,  // optimize boolean expressions
+      loops: true,  // optimize loops
+      unused: false,  // drop unused variables/functions
+      hoist_funs: true,  // hoist function declarations
+      hoist_vars: true, // hoist variable declarations
+      if_return: true,  // optimize if-s followed by return/continue
+      join_vars: true,  // join var declarations
+      cascade: false,  // try to cascade `right` into `left` in sequences
+      side_effects: false,  // drop side-effect-free statements
+      warnings: true,  // warn about potentially dangerous optimizations/code
+      global_defs: {},     // global definitions
+    },
+  }));
+}
+
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: {
-    js: ['babel-polyfill', './app.js'],
+    js: ['./app.js'],
     vendor: ['react']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
   devtool: 'source-map',
   devServer: {
@@ -64,14 +104,5 @@ module.exports = {
     ]
   },
   postcss: [autoprefixer],
-  plugins: [
-    new webpack.DefinePlugin({
-      __DEBUG__: process.env.NODE_ENV !== 'prod'
-    }),
-    new ExtractTextPlugin('weui.min.css'),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html')
-    })
-  ]
+  plugins: plugins,
 };

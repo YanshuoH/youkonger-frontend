@@ -47,7 +47,7 @@ class Step3 extends React.Component {
   get adminHash() {
     return (
       <div className="hash-container">
-        <CellsTitle className="wording">请妥善保管以下链接, 以备将来修改时使用</CellsTitle>
+        <CellsTitle className="wording">请妥善保管以下链接, 以备将来统计结果时使用</CellsTitle>
         <Clipboard
           type="input"
           btnId="adminUrlBtn"

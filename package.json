@@ -7,7 +7,8 @@
   "author": "YanshuoH",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --progress"
+    "dev": "webpack-dev-server --progress",
+    "dist": "rm -rf dist && NODE_ENV=prod webpack"
   },
   "dependencies": {
     "classnames": "^2.2.5",
