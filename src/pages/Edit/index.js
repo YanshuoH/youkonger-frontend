@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import Stepper from '../../components/Stepper';
 import { Step } from '../../constants';
 import Step1 from './Step1';
@@ -9,16 +11,16 @@ import './style.less';
 
 const mapStateToProps = state => ({
   step: state.create.get('step'),
+  moveForward: state.create.get('moveForward'),
 });
 class Creation extends React.Component {
+
   get content() {
     if (this.props.step === Step.Step1) {
       return (<Step1 />);
-    }
-    if (this.props.step === Step.Step2) {
+    } else if (this.props.step === Step.Step2) {
       return (<Step2 />);
-    }
-    if (this.props.step === Step.Step3) {
+    } else if (this.props.step === Step.Step3) {
       return (<Step3 />);
     }
 
@@ -29,16 +31,24 @@ class Creation extends React.Component {
     const stepper = this.props.step < Step.Step3 ?
       (<Stepper number={2} step={this.props.step} />) : null;
     return (
-      <div className="yk-creation">
-        {stepper}
-        {this.content}
-      </div>
+      <ReactCSSTransitionGroup
+        component="div"
+        transitionName={this.props.moveForward ? 'pageSlide' : 'pageSlideReverse'}
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={200}
+      >
+        <div className={classnames('yk-container', 'yk-creation')} key={this.props.step}>
+          {stepper}
+          {this.content}
+        </div>
+      </ReactCSSTransitionGroup>
     );
   }
 }
 
 Creation.propTypes = {
   step: PropTypes.oneOf(Step.Order),
+  moveForward: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(Creation);

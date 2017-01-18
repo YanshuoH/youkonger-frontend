@@ -69,7 +69,6 @@ export function selectDate(day) {
 function fetchEventUpsertApiSuccess(data) {
   return (dispatch) => {
     browserHistory.push(`/event/${data.uuid}`);
-    dispatch(nextStep());
     // parse timeInUnix and add date field for eventDates
     for (let i = 0; i < data.eventDateList.length; i++) {
       data.eventDateList[i].date = moment.unix(data.eventDateList[i].timeInUnix);
@@ -81,6 +80,7 @@ function fetchEventUpsertApiSuccess(data) {
         data,
       }
     });
+    dispatch(nextStep());
   };
 }
 

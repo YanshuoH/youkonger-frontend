@@ -48,14 +48,24 @@ class Step2 extends React.Component {
         />
         <div className="yk-btn">
           <Button
-            onClick={() => { this.props.dispatch(fetchEventUpsertApi()); }}
+            onClick={() => {
+              if (this.props.fetching) {
+                return;
+              }
+              this.props.dispatch(fetchEventUpsertApi());
+            }}
             disabled={this.props.fetching || this.props.selected.size === 0}
           >
             {nextBtnContent}
           </Button>
           <Button
             type="default"
-            onClick={() => { this.props.dispatch(previousStep()); }}
+            onClick={() => {
+              if (this.props.fetching) {
+                return;
+              }
+              this.props.dispatch(previousStep());
+            }}
           >
             后退
           </Button>

@@ -21,6 +21,7 @@ const initialState = fromJS({
   location: '',
   eventDateList: [],
   step: Step.Step1,
+  moveForward: true,
   titleErr: false,
   virgin: true,
   fetching: false,
@@ -32,9 +33,12 @@ export default function reducer(state = initialState, action) {
     case CREATION_NEXT_STEP:
       return state
         .set('step', state.get('step') + 1)
-        .set('titleErr', false);
+        .set('titleErr', false)
+        .set('moveForward', true);
     case CREATION_PREVIOUS_STEP:
-      return state.set('step', state.get('step') - 1);
+      return state
+        .set('step', state.get('step') - 1)
+        .set('moveForward', false);
     case CREATION_CALENDAR_SELECT_DATE:
       return state.set('eventDateList', action.payload.eventDateList);
     case CREATION_CHANGE_TITLE:
