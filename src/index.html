@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>有空儿</title>
     <script>
-        window.__INITIAL_EVENT_STATE__ = JSON.parse("{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}");
+        window.__INITIAL_PARTICIPATE_STATE__ = JSON.parse("{{if .InitialParticipate}}{{ .InitialParticipate }}{{else}}{}{{end}}");
+        window.__IS_SSR__ = JSON.parse('{{if .IsSSR}}{ "isSSR": true }{{else}}{ "isSSR": false }{{end}}');
     </script>
 </head>
 <body>
