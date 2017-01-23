@@ -10,6 +10,7 @@ import {
   CellFooter,
   Icon,
 } from 'react-weui';
+import Selection from './Selection';
 import '../../styles/app.less';
 import {
   onChangeNameInput,
@@ -76,9 +77,10 @@ class Participate extends React.Component {
         <div className="yk-title-container">
           <div className="yk-page-title">{this.props.title}</div>
           {this.optionalFields}
-          <div className="yk-page-desc">{`已参加人数: ${this.props.dateList.size}`}</div>
+          <div className="yk-page-desc">{`已参加人数: @TODO`}</div>
         </div>
         {this.nameInput}
+        <Selection />
       </div>
     );
   }
