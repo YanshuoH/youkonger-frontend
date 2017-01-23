@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import event from './reducers/event';
 import toast from './reducers/toast';
 import create from './reducers/create';
+import participate from './reducers/participate';
 
 export default combineReducers({
-  event,
   create,
-  toast
+  toast,
+  participate,
 });

@@ -18,7 +18,7 @@ const initialState = window.__INITIAL_STATE__;
 const store = configureStore(
   Object.assign({},
     initialState,
-    { event: fromJS(window.__INITIAL_EVENT_STATE__) }
+    { participate: fromJS(window.__INITIAL_PARTICIPATE_STATE__) }
   )
 );
 
