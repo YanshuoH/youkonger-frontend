@@ -11,6 +11,10 @@ import {
   CellFooter,
   Badge,
 } from 'react-weui';
+import {
+  showEventDateDetail,
+  checkEventDate,
+} from '../../redux/actions/participate';
 
 const mapStateToProps = state => ({
   dates: state.participate.get('eventDateList'),
@@ -22,24 +26,25 @@ class Selection extends React.Component {
     this.onDateBodyClick = this.onDateBodyClick.bind(this);
   }
 
-  onCheckboxClick(eventDate) {
-    console.log('checkbox');
+  onCheckboxClick(eventDate, idx) {
+    this.props.dispatch(checkEventDate(idx));
   }
 
   onDateBodyClick(eventDate) {
-    console.log('body');
+    this.props.dispatch(showEventDateDetail(eventDate));
   }
 
   get dateList() {
     let key = 0;
-    return this.props.dates.map((eventDate) => {
+    return this.props.dates.map((eventDate, idx) => {
       const badge = eventDate.get('eventParticipantList').isEmpty() ?
         null : (<Badge preset="body">{eventDate.get('eventParticipantList')}</Badge>);
 
+      const checked = !!eventDate.get('checked');
       return (
         <Cell key={key++}>
-          <CellHeader onClick={() => { this.onCheckboxClick(eventDate); }}>
-            <Checkbox name="checkbox1" value="1" />
+          <CellHeader onClick={() => { this.onCheckboxClick(eventDate, idx); }}>
+            <Checkbox name={eventDate.get('uuid')} checked={checked} />
           </CellHeader>
           <CellBody onClick={() => { this.onDateBodyClick(eventDate); }}>
             {moment.unix(eventDate.get('timeInUnix')).utcOffset(8).format('YYYY年MM月DD日')}
@@ -67,6 +72,7 @@ class Selection extends React.Component {
 
 Selection.propTypes = {
   dates: PropTypes.object,
+  dispatch: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(Selection);
