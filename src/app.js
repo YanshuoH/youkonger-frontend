@@ -24,7 +24,7 @@ const store = configureStore(
   )
 );
 
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(
   <Root history={history} routes={makeRoutes()} store={store} />,

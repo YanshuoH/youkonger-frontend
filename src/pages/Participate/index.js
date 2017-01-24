@@ -24,7 +24,7 @@ const mapStateToProps = state => ({
   dateList: state.participate.get('eventDateList'),
   nameErr: state.participate.get('nameErr'),
   name: state.participate.get('name'),
-})
+});
 class Participate extends React.Component {
   constructor(props) {
     super(props);
@@ -42,9 +42,10 @@ class Participate extends React.Component {
 
   get optionalFields() {
     let key = 0;
-    return ['description', 'location'].map(name => (
-      <div className="yk-page-desc" key={key++}>{this.props[name]}</div>
-    ));
+    return [
+      (<div className="yk-page-desc" key={key++}>{this.props.description}</div>),
+      (<div className="yk-page-desc" key={key++}>{this.props.location}</div>)
+    ];
   }
 
   get nameInput() {
@@ -77,7 +78,7 @@ class Participate extends React.Component {
         <div className="yk-title-container">
           <div className="yk-page-title">{this.props.title}</div>
           {this.optionalFields}
-          <div className="yk-page-desc">{`已参加人数: @TODO`}</div>
+          <div className="yk-page-desc">已参加人数: @TODO</div>
         </div>
         {this.nameInput}
         <Selection />
@@ -93,10 +94,6 @@ Participate.propTypes = {
   location: PropTypes.string,
   nameErr: PropTypes.bool,
   name: PropTypes.string,
-  /**
-   * {Immutable.List}
-   */
-  dateList: PropTypes.object,
-}
+};
 
 export default connect(mapStateToProps)(Participate);

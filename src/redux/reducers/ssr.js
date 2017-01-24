@@ -2,7 +2,8 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = {
   isSSR: window.__IS_SSR__,
-}
+};
+
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOCATION_CHANGE:
