@@ -13,7 +13,7 @@
         ]
       }
     ],
-    "no-console": ["error", { "allow": ["log", "info"] }],
+    "no-console": ["error", { "allow": ["log", "info", "warn"] }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-unused-prop-types": 0,
     "import/no-named-as-default": 0,

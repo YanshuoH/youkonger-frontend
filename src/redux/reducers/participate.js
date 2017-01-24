@@ -2,6 +2,9 @@ import { fromJS } from 'immutable';
 import {
   PARTICIPATION_NAME_ONCHANGE,
   PARTICIPATION_NAME_ONBLUR,
+  PARTICIPATION_SHOW_DATE_DETAIL,
+  PARTICIPATION_EXIT_DATE_DETAIL,
+  PARTICIPATION_CHECK_DATE,
 } from '../../constants';
 /**
  * Holder, served from server
@@ -26,6 +29,11 @@ const initialState = fromJS({
   // interactive fields
   name: '',
   nameErr: false,
+
+  // navigation
+  moveForward: false,
+  // user click an event date to view detail
+  currentEventDate: undefined,
 });
 
 export default function reducer(state = initialState, action) {
@@ -36,6 +44,17 @@ export default function reducer(state = initialState, action) {
       return state
         .set('name', action.payload.value)
         .set('nameErr', action.payload.nameErr);
+    case PARTICIPATION_SHOW_DATE_DETAIL:
+      return state
+        .set('currentEventDate', action.payload.eventDate)
+        .set('moveForward', true);
+    case PARTICIPATION_EXIT_DATE_DETAIL:
+      return state
+        .delete('currentEventDate')
+        .set('moveForward', false);
+    case PARTICIPATION_CHECK_DATE:
+      return state
+        .setIn(['eventDateList', action.payload.eventDateIdx], action.payload.eventDate);
     default:
       return state;
   }
