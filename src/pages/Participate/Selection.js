@@ -37,7 +37,7 @@ class Selection extends React.Component {
       this.props.dispatch(checkNameInput());
       return;
     }
-    this.props.dispatch(checkEventDate(idx));
+    this.props.dispatch(checkEventDate(eventDate, idx));
   }
 
   onDateBodyClick(eventDate) {
@@ -61,7 +61,7 @@ class Selection extends React.Component {
       return (
         <Cell key={key++}>
           <CellHeader onClick={() => { this.onCheckboxClick(eventDate, idx); }}>
-            <Checkbox name={eventDate.get('uuid')} checked={checked} />
+            <Checkbox name={eventDate.get('uuid')} checked={checked} readOnly />
           </CellHeader>
           <CellBody
             className={cellBodyClassName}

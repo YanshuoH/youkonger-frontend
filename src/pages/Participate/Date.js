@@ -10,11 +10,17 @@ import {
   Switch,
   Radio,
 } from 'react-weui';
+import NavBar from '../../components/NavBar';
 import Spacing from '../../components/Spacing';
 import './style.less';
+import {
+  exitEventDateDetail,
+  checkEventDate,
+} from '../../redux/actions/participate';
 
 const mapStateToProps = state => ({
   eventDate: state.participate.get('currentEventDate'),
+  eventTitle: state.participate.get('title'),
   name: state.participate.get('name'),
 });
 
@@ -22,6 +28,18 @@ const mapStateToProps = state => ({
  * The selected participate date, show details of that day
  */
 class ParticipateDate extends React.Component {
+  get nav() {
+    return (
+      <NavBar>
+        <span
+          className="arrow arrow-left"
+          onClick={() => { this.props.dispatch(exitEventDateDetail()); }}
+        />
+        <span className="nav-title">{this.props.eventTitle}</span>
+      </NavBar>
+    );
+  }
+
   get caption() {
     const formattedDate = moment
       .unix(this.props.eventDate.get('timeInUnix'))
@@ -42,7 +60,12 @@ class ParticipateDate extends React.Component {
           <FormCell switch>
             <CellBody>{this.props.name}</CellBody>
             <CellFooter>
-              <Switch />
+              <Switch
+                checked={this.props.eventDate.get('checked') || false}
+                onChange={() => {
+                  this.props.dispatch(checkEventDate(this.props.eventDate));
+                }}
+              />
             </CellFooter>
           </FormCell>
         </Form>
@@ -88,7 +111,8 @@ class ParticipateDate extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="yk-container-with-nav">
+        {this.nav}
         {this.caption}
         <Spacing />
         {this.choice}
@@ -104,6 +128,8 @@ class ParticipateDate extends React.Component {
 ParticipateDate.propTypes = {
   eventDate: PropTypes.object,
   name: PropTypes.string,
+  eventTitle: PropTypes.string,
+  dispatch: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(ParticipateDate);

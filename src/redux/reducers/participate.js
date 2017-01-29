@@ -54,9 +54,16 @@ export default function reducer(state = initialState, action) {
       return state
         .delete('currentEventDate')
         .set('moveForward', false);
-    case PARTICIPATION_CHECK_DATE:
-      return state
+    case PARTICIPATION_CHECK_DATE: {
+      state = state
         .setIn(['eventDateList', action.payload.eventDateIdx], action.payload.eventDate);
+      // also set the current event date's checked
+      if (state.get('currentEventDate')
+        && action.payload.eventDate.get('uuid') === state.get('currentEventDate').get('uuid')) {
+        state = state.setIn(['currentEventDate', 'checked'], action.payload.eventDate.get('checked'));
+      }
+      return state;
+    }
     case PARTICIPATION_NAME_CHECK:
       return state
         .set('nameErr', state.get('name') === '');

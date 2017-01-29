@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Icon } from 'react-weui';
 import './style.less';
 
 export default class NavBar extends React.PureComponent {

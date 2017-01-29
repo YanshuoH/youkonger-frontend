@@ -56,7 +56,7 @@ export function exitEventDateDetail() {
 export function checkEventDate(eventDate, eventDateIdx = -1) {
   return (dispatch, getState) => {
     if (eventDateIdx === -1) {
-      eventDateIdx = getState().participant
+      eventDateIdx = getState().participate
         .get('eventDateList')
         .findIndex(ed => ed.get('uuid') === eventDate.get('uuid'));
     }
@@ -67,7 +67,7 @@ export function checkEventDate(eventDate, eventDateIdx = -1) {
     let modifiedEventDate;
     if (eventDate.get('checked')) {
       // set to unchecked (remove the flag)
-      modifiedEventDate = eventDate.delete('checked');
+      modifiedEventDate = eventDate.set('checked', false);
     } else {
       modifiedEventDate = eventDate.set('checked', true);
     }
