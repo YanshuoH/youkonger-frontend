@@ -12,7 +12,7 @@ class Participate extends React.Component {
   render() {
     // if currentEventDate is set, should render the  page
     // otherwise, Entry it is
-    let content
+    let content;
     if (this.props.currentEventDate) {
       content = <Date />;
     } else {
@@ -36,6 +36,6 @@ class Participate extends React.Component {
 Participate.propTypes = {
   currentEventDate: PropTypes.object,
   moveForward: PropTypes.bool,
-}
+};
 
-export default connect()(Participate);
+export default connect(mapStateToProps)(Participate);

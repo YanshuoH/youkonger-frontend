@@ -4,6 +4,7 @@ import {
   PARTICIPATION_SHOW_DATE_DETAIL,
   PARTICIPATION_EXIT_DATE_DETAIL,
   PARTICIPATION_CHECK_DATE,
+  PARTICIPATION_NAME_CHECK,
 } from '../../../constants';
 
 export function onChangeNameInput(value) {
@@ -22,6 +23,12 @@ export function onBlurNameInput(value) {
       nameErr: value === '',
       value,
     }
+  };
+}
+
+export function checkNameInput() {
+  return {
+    type: PARTICIPATION_NAME_CHECK
   };
 }
 

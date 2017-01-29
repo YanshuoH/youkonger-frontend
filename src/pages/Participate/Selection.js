@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import moment from 'moment';
 import {
   CellsTitle,
@@ -10,14 +11,19 @@ import {
   CellBody,
   CellFooter,
   Badge,
+  Button,
+  ButtonArea,
 } from 'react-weui';
+import Spacing from '../../components/Spacing';
 import {
   showEventDateDetail,
   checkEventDate,
+  checkNameInput,
 } from '../../redux/actions/participate';
 
 const mapStateToProps = state => ({
   dates: state.participate.get('eventDateList'),
+  enable: state.participate.get('name') !== '' && !state.participate.get('nameErr'),
 });
 class Selection extends React.Component {
   constructor(props) {
@@ -27,18 +33,29 @@ class Selection extends React.Component {
   }
 
   onCheckboxClick(eventDate, idx) {
+    if (!this.props.enable) {
+      this.props.dispatch(checkNameInput());
+      return;
+    }
     this.props.dispatch(checkEventDate(idx));
   }
 
   onDateBodyClick(eventDate) {
+    if (!this.props.enable) {
+      this.props.dispatch(checkNameInput());
+      return;
+    }
     this.props.dispatch(showEventDateDetail(eventDate));
   }
 
   get dateList() {
     let key = 0;
+    const cellBodyClassName = classnames({
+      'yk-text-disable': !this.props.enable,
+    });
     return this.props.dates.map((eventDate, idx) => {
       const badge = eventDate.get('eventParticipantList').isEmpty() ?
-        null : (<Badge preset="body">{eventDate.get('eventParticipantList')}</Badge>);
+        null : (<Badge preset="body">{eventDate.get('eventParticipantList').size}</Badge>);
 
       const checked = !!eventDate.get('checked');
       return (
@@ -46,7 +63,10 @@ class Selection extends React.Component {
           <CellHeader onClick={() => { this.onCheckboxClick(eventDate, idx); }}>
             <Checkbox name={eventDate.get('uuid')} checked={checked} />
           </CellHeader>
-          <CellBody onClick={() => { this.onDateBodyClick(eventDate); }}>
+          <CellBody
+            className={cellBodyClassName}
+            onClick={() => { this.onDateBodyClick(eventDate); }}
+          >
             {moment.unix(eventDate.get('timeInUnix')).utcOffset(8).format('YYYY年MM月DD日')}
             {badge}
           </CellBody>
@@ -61,10 +81,16 @@ class Selection extends React.Component {
   render() {
     return (
       <div>
+        <Spacing />
         <CellsTitle>选择有空的时间</CellsTitle>
         <Form checkbox>
           {this.dateList}
         </Form>
+        <Spacing />
+        <ButtonArea>
+          <Button>有空</Button>
+          <Button type="default">抱歉无法参加</Button>
+        </ButtonArea>
       </div>
     );
   }
@@ -72,6 +98,7 @@ class Selection extends React.Component {
 
 Selection.propTypes = {
   dates: PropTypes.object,
+  enable: PropTypes.bool.isRequired,
   dispatch: PropTypes.func,
 };
 
