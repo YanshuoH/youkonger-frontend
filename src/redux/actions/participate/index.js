@@ -48,13 +48,22 @@ export function exitEventDateDetail() {
 }
 
 /**
- * Toggle the eventDate's checked property
+ * Toggle the eventDate's checked property, will find eventDateIdx by eventDate if not provided
+ * @param eventDate {object}
  * @param eventDateIdx {number}
  * @returns {function()}
  */
-export function checkEventDate(eventDateIdx) {
+export function checkEventDate(eventDate, eventDateIdx = -1) {
   return (dispatch, getState) => {
-    const eventDate = getState().participate.get('eventDateList').get(eventDateIdx);
+    if (eventDateIdx === -1) {
+      eventDateIdx = getState().participant
+        .get('eventDateList')
+        .findIndex(ed => ed.get('uuid') === eventDate.get('uuid'));
+    }
+    // still not found
+    if (eventDateIdx === -1) {
+      console.warn('Unable to find eventDate index');
+    }
     let modifiedEventDate;
     if (eventDate.get('checked')) {
       // set to unchecked (remove the flag)
