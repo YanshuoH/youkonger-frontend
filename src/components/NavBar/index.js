@@ -4,10 +4,8 @@ import './style.less';
 
 export default class NavBar extends React.PureComponent {
   render() {
-    return null;
     return (
       <div className="yk-navbar">
-        <Icon value="loading" />
         {this.props.children}
       </div>
     );
@@ -15,5 +13,5 @@ export default class NavBar extends React.PureComponent {
 }
 
 NavBar.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 };
