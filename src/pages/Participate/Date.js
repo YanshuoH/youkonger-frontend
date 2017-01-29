@@ -1,15 +1,101 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import {
+  Form,
+  FormCell,
+  CellsTitle,
+  CellBody,
+  CellFooter,
+  Switch,
+  Radio,
+} from 'react-weui';
+import Spacing from '../../components/Spacing';
+import './style.less';
+
+const mapStateToProps = state => ({
+  eventDate: state.participate.get('currentEventDate'),
+  name: state.participate.get('name'),
+});
 
 /**
  * The selected participate date, show details of that day
  */
 class ParticipateDate extends React.Component {
+  get caption() {
+    const formattedDate = moment
+      .unix(this.props.eventDate.get('timeInUnix'))
+      .utcOffset(8)
+      .format('YYYY年MM月DD日');
+    return (
+      <div className="yk-participate-caption">
+        <span>{formattedDate}</span>
+      </div>
+    );
+  }
+
+  get choice() {
+    return (
+      <div>
+        <CellsTitle>你是否有空</CellsTitle>
+        <Form>
+          <FormCell switch>
+            <CellBody>{this.props.name}</CellBody>
+            <CellFooter>
+              <Switch />
+            </CellFooter>
+          </FormCell>
+        </Form>
+      </div>
+    );
+  }
+
+  get availableList() {
+    const participants = this.props.eventDate.get('eventParticipantList');
+    const elems = participants.map((participant, idx) => (
+      <FormCell radio key={idx}>
+        <CellBody>{participant.get('name')}</CellBody>
+        <CellFooter>
+          <Radio defaultChecked disabled />
+        </CellFooter>
+      </FormCell>
+    ));
+    return (
+      <div>
+        <CellsTitle>有空的人</CellsTitle>
+        <Form radio>
+          {elems}
+        </Form>
+      </div>
+    );
+  }
+
+  /**
+   * @TODO
+   * @returns {XML}
+   */
+  get unavailableList() {
+    return (<div />);
+  }
+
   render() {
     return (
-      <div>Thing</div>
+      <div>
+        {this.caption}
+        <Spacing />
+        {this.choice}
+        <Spacing />
+        {this.availableList}
+        <Spacing />
+        {this.unavailableList}
+      </div>
     );
   }
 }
 
-export default connect()(ParticipateDate);
+ParticipateDate.propTypes = {
+  eventDate: PropTypes.object,
+  name: PropTypes.string,
+};
+
+export default connect(mapStateToProps)(ParticipateDate);
