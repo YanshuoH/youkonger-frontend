@@ -50,6 +50,14 @@ class ParticipateDate extends React.Component {
     );
   }
 
+  get availableListHolder() {
+    return (
+      <div>
+        <CellsTitle>暂时没有参加的人</CellsTitle>
+      </div>
+    );
+  }
+
   get availableList() {
     const participants = this.props.eventDate.get('eventParticipantList');
     const elems = participants.map((participant, idx) => (
@@ -85,7 +93,7 @@ class ParticipateDate extends React.Component {
         <Spacing />
         {this.choice}
         <Spacing />
-        {this.availableList}
+        {this.props.eventDate.get('eventParticipantList').size === 0 ? this.availableListHolder : this.availableList}
         <Spacing />
         {this.unavailableList}
       </div>
