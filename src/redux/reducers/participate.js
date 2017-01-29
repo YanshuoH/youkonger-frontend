@@ -5,12 +5,14 @@ import {
   PARTICIPATION_SHOW_DATE_DETAIL,
   PARTICIPATION_EXIT_DATE_DETAIL,
   PARTICIPATION_CHECK_DATE,
+  PARTICIPATION_NAME_CHECK,
 } from '../../constants';
+
 /**
  * Holder, served from server
  * @type {Immutable.Map}
  */
-const initialState = fromJS({
+export const initialState = fromJS({
   uuid: '',
   title: '',
   description: '',
@@ -55,6 +57,9 @@ export default function reducer(state = initialState, action) {
     case PARTICIPATION_CHECK_DATE:
       return state
         .setIn(['eventDateList', action.payload.eventDateIdx], action.payload.eventDate);
+    case PARTICIPATION_NAME_CHECK:
+      return state
+        .set('nameErr', state.get('name') === '');
     default:
       return state;
   }
