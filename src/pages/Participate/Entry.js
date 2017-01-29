@@ -9,15 +9,20 @@ import {
   Input,
   CellFooter,
   Icon,
+  Button,
+  ButtonArea,
 } from 'react-weui';
+import Spacing from '../../components/Spacing';
 import Selection from './Selection';
 import '../../styles/app.less';
 import {
   onChangeNameInput,
   onBlurNameInput,
+  fetchEventParticipantUpsertApi,
 } from '../../redux/actions/participate';
 
 const mapStateToProps = state => ({
+  fetching: state.participate.get('fetching'),
   title: state.participate.get('title'),
   description: state.participate.get('description'),
   location: state.participate.get('location'),
@@ -31,6 +36,7 @@ class Participate extends React.Component {
     super(props);
     this.onChangeNameInput = this.onChangeNameInput.bind(this);
     this.onBlurNameInput = this.onBlurNameInput.bind(this);
+    this.onSubmitButtonClick = this.onSubmitButtonClick.bind(this);
   }
 
   onChangeNameInput(e) {
@@ -39,6 +45,13 @@ class Participate extends React.Component {
 
   onBlurNameInput(e) {
     this.props.dispatch(onBlurNameInput(e.currentTarget.value));
+  }
+
+  onSubmitButtonClick(e) {
+    if (this.props.fetching) {
+      return;
+    }
+    this.props.dispatch(fetchEventParticipantUpsertApi());
   }
 
   get optionalFields() {
@@ -74,6 +87,15 @@ class Participate extends React.Component {
   }
 
   render() {
+    // selected date size
+    let selectedDateCount = 0;
+    for (let i = 0; i < this.props.dateList.size; i++) {
+      if (this.props.dateList.get(i).get('checked')) {
+        selectedDateCount++;
+      }
+    }
+    const submitBtnContent = this.props.fetching ?
+      (<span><Icon value="loading" />发送中</span>) : ('有空');
     return (
       <div>
         <div className="yk-title-container">
@@ -83,6 +105,16 @@ class Participate extends React.Component {
         </div>
         {this.nameInput}
         <Selection />
+        <Spacing />
+        <ButtonArea>
+          <Button
+            onClick={this.onSubmitButtonClick}
+            disabled={this.props.fetching || selectedDateCount === 0}
+          >
+            {submitBtnContent}
+          </Button>
+          <Button type="default">抱歉无法参加</Button>
+        </ButtonArea>
       </div>
     );
   }
@@ -90,7 +122,9 @@ class Participate extends React.Component {
 
 Participate.propTypes = {
   dispatch: PropTypes.func,
+  fetching: PropTypes.bool,
   title: PropTypes.string,
+  dateList: PropTypes.object,
   description: PropTypes.string,
   location: PropTypes.string,
   nameErr: PropTypes.bool,

@@ -5,7 +5,12 @@ import {
   PARTICIPATION_EXIT_DATE_DETAIL,
   PARTICIPATION_CHECK_DATE,
   PARTICIPATION_NAME_CHECK,
+  PARTICIPATION_UPSERT_REQUEST,
+  PARTICIPATION_UPSERT_SUCCESS,
+  PARTICIPATION_UPSERT_FAILURE,
+  API_EVENT_PARTICIPANT_UPSERT,
 } from '../../../constants';
+import { fetchPost } from '../../../utils/fetchUtils';
 
 export function onChangeNameInput(value) {
   return {
@@ -78,5 +83,63 @@ export function checkEventDate(eventDate, eventDateIdx = -1) {
         eventDateIdx,
       }
     });
+  };
+}
+
+export function fetchEventParticipantUpsertRequest() {
+  return {
+    type: PARTICIPATION_UPSERT_REQUEST,
+    payload: {
+      fetching: true,
+    }
+  };
+}
+
+export function fetchEventParticipantUpsertSuccess(event) {
+  return {
+    type: PARTICIPATION_UPSERT_SUCCESS,
+    payload: {
+      fetching: false,
+      submitted: true,
+      event,
+    }
+  };
+}
+
+export function fetchEventParticipantUpsertFailure(error) {
+  return {
+    type: PARTICIPATION_UPSERT_FAILURE,
+    payload: {
+      fetching: false,
+      error,
+    }
+  };
+}
+
+export function fetchEventParticipantUpsertApi() {
+  return (dispatch, getState) => {
+    const participateState = getState().participate;
+    const eventDates = participateState.get('eventDateList');
+    const datesToPost = []
+    for (let i = 0; i < eventDates.size; i++) {
+      const d = eventDates.get(i);
+      if (d.get('checked')) {
+        datesToPost.push({
+          eventDateUuid: d.get('uuid'),
+        });
+      }
+    }
+    const data = {
+      name: participateState.get('name'),
+      eventParticipantList: datesToPost,
+    }
+    dispatch(fetchEventParticipantUpsertRequest());
+    fetchPost(API_EVENT_PARTICIPANT_UPSERT, JSON.stringify(data))
+      .then((resp) => {
+        dispatch(fetchEventParticipantUpsertSuccess(resp));
+      })
+      .catch((error) => {
+        dispatch(fetchEventParticipantUpsertFailure(error));
+      });
   };
 }

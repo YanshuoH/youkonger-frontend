@@ -11,8 +11,6 @@ import {
   CellBody,
   CellFooter,
   Badge,
-  Button,
-  ButtonArea,
 } from 'react-weui';
 import Spacing from '../../components/Spacing';
 import {
@@ -86,11 +84,6 @@ class Selection extends React.Component {
         <Form checkbox>
           {this.dateList}
         </Form>
-        <Spacing />
-        <ButtonArea>
-          <Button>有空</Button>
-          <Button type="default">抱歉无法参加</Button>
-        </ButtonArea>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-export function fetchGet(path, options = {}) {
+export function fetchGet(path) {
   return fetch(path, {
     headers: {
       Accept: 'application/json',
@@ -14,12 +14,13 @@ export function fetchGet(path, options = {}) {
     });
 }
 
-export function fetchPost(path, body, options = {}) {
+export function fetchPost(path, body) {
   return fetch(path, {
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'POST',
+    credentials: 'same-origin',
     body,
   })
     .then(resp => resp.json())

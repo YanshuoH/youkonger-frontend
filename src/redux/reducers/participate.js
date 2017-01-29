@@ -6,6 +6,9 @@ import {
   PARTICIPATION_EXIT_DATE_DETAIL,
   PARTICIPATION_CHECK_DATE,
   PARTICIPATION_NAME_CHECK,
+  PARTICIPATION_UPSERT_REQUEST,
+  PARTICIPATION_UPSERT_FAILURE,
+  PARTICIPATION_UPSERT_SUCCESS,
 } from '../../constants';
 
 /**
@@ -13,6 +16,7 @@ import {
  * @type {Immutable.Map}
  */
 export const initialState = fromJS({
+  fetching: false,
   uuid: '',
   title: '',
   description: '',
@@ -28,6 +32,8 @@ export const initialState = fromJS({
     },
   ],
 
+  participantUserUuid: '',
+
   // interactive fields
   name: '',
   nameErr: false,
@@ -36,6 +42,8 @@ export const initialState = fromJS({
   moveForward: false,
   // user click an event date to view detail
   currentEventDate: undefined,
+  // submitted if upsert api returns ok
+  submitted: false,
 });
 
 export default function reducer(state = initialState, action) {
@@ -67,6 +75,14 @@ export default function reducer(state = initialState, action) {
     case PARTICIPATION_NAME_CHECK:
       return state
         .set('nameErr', state.get('name') === '');
+    case PARTICIPATION_UPSERT_REQUEST:
+    case PARTICIPATION_UPSERT_FAILURE:
+      return state.set('fetching', action.payload.fetching);
+    case PARTICIPATION_UPSERT_SUCCESS:
+      state = initialState.mergeDeep(fromJS(action.payload.event))
+      return state
+        .set('submitted', true)
+        .set('moveForward', true);
     default:
       return state;
   }
