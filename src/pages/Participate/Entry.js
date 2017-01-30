@@ -20,6 +20,9 @@ import {
   onBlurNameInput,
   fetchEventParticipantUpsertApi,
 } from '../../redux/actions/participate';
+import {
+  countCheckedDate
+} from '../../utils';
 
 const mapStateToProps = state => ({
   fetching: state.participate.get('fetching'),
@@ -29,6 +32,7 @@ const mapStateToProps = state => ({
   dateList: state.participate.get('eventDateList'),
   nameErr: state.participate.get('nameErr'),
   name: state.participate.get('name'),
+  userUuid: state.participate.get('participantUserUuid'),
   currentEventDate: state.participate.get('currentEventDate'),
 });
 class Participate extends React.Component {
@@ -47,7 +51,7 @@ class Participate extends React.Component {
     this.props.dispatch(onBlurNameInput(e.currentTarget.value));
   }
 
-  onSubmitButtonClick(e) {
+  onSubmitButtonClick() {
     if (this.props.fetching) {
       return;
     }
@@ -88,12 +92,7 @@ class Participate extends React.Component {
 
   render() {
     // selected date size
-    let selectedDateCount = 0;
-    for (let i = 0; i < this.props.dateList.size; i++) {
-      if (this.props.dateList.get(i).get('checked')) {
-        selectedDateCount++;
-      }
-    }
+    const checkedDateCount = countCheckedDate(this.props.userUuid, this.props.dateList);
     const submitBtnContent = this.props.fetching ?
       (<span><Icon value="loading" />发送中</span>) : ('有空');
     return (
@@ -109,7 +108,7 @@ class Participate extends React.Component {
         <ButtonArea>
           <Button
             onClick={this.onSubmitButtonClick}
-            disabled={this.props.fetching || selectedDateCount === 0}
+            disabled={this.props.fetching || checkedDateCount === 0}
           >
             {submitBtnContent}
           </Button>
@@ -124,6 +123,7 @@ Participate.propTypes = {
   dispatch: PropTypes.func,
   fetching: PropTypes.bool,
   title: PropTypes.string,
+  userUuid: PropTypes.string,
   dateList: PropTypes.object,
   description: PropTypes.string,
   location: PropTypes.string,

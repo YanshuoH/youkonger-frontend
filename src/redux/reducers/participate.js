@@ -65,10 +65,10 @@ export default function reducer(state = initialState, action) {
     case PARTICIPATION_CHECK_DATE: {
       state = state
         .setIn(['eventDateList', action.payload.eventDateIdx], action.payload.eventDate);
-      // also set the current event date's checked
+      // also set the current event date
       if (state.get('currentEventDate')
         && action.payload.eventDate.get('uuid') === state.get('currentEventDate').get('uuid')) {
-        state = state.setIn(['currentEventDate', 'checked'], action.payload.eventDate.get('checked'));
+        state = state.set('currentEventDate', action.payload.eventDate);
       }
       return state;
     }
@@ -79,7 +79,7 @@ export default function reducer(state = initialState, action) {
     case PARTICIPATION_UPSERT_FAILURE:
       return state.set('fetching', action.payload.fetching);
     case PARTICIPATION_UPSERT_SUCCESS:
-      state = initialState.mergeDeep(fromJS(action.payload.event))
+      state = initialState.mergeDeep(fromJS(action.payload.event));
       return state
         .set('submitted', true)
         .set('moveForward', true);

@@ -18,9 +18,13 @@ import {
   checkEventDate,
   checkNameInput,
 } from '../../redux/actions/participate';
+import {
+  isCheckedDate,
+} from '../../utils';
 
 const mapStateToProps = state => ({
   dates: state.participate.get('eventDateList'),
+  userUuid: state.participate.get('participantUserUuid'),
   enable: state.participate.get('name') !== '' && !state.participate.get('nameErr'),
 });
 class Selection extends React.Component {
@@ -55,7 +59,7 @@ class Selection extends React.Component {
       const badge = eventDate.get('eventParticipantList').isEmpty() ?
         null : (<Badge preset="body">{eventDate.get('eventParticipantList').size}</Badge>);
 
-      const checked = !!eventDate.get('checked');
+      const { checked } = isCheckedDate(this.props.userUuid, eventDate);
       return (
         <Cell key={key++}>
           <CellHeader onClick={() => { this.onCheckboxClick(eventDate, idx); }}>
@@ -92,6 +96,7 @@ class Selection extends React.Component {
 Selection.propTypes = {
   dates: PropTypes.object,
   enable: PropTypes.bool.isRequired,
+  userUuid: PropTypes.string,
   dispatch: PropTypes.func,
 };
 

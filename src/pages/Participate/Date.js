@@ -17,9 +17,13 @@ import {
   exitEventDateDetail,
   checkEventDate,
 } from '../../redux/actions/participate';
+import {
+  isCheckedDate,
+} from '../../utils';
 
 const mapStateToProps = state => ({
   eventDate: state.participate.get('currentEventDate'),
+  userUuid: state.participate.get('participantUserUuid'),
   eventTitle: state.participate.get('title'),
   name: state.participate.get('name'),
 });
@@ -53,6 +57,7 @@ class ParticipateDate extends React.Component {
   }
 
   get choice() {
+    const { checked } = isCheckedDate(this.props.userUuid, this.props.eventDate);
     return (
       <div>
         <CellsTitle>你是否有空</CellsTitle>
@@ -61,9 +66,10 @@ class ParticipateDate extends React.Component {
             <CellBody>{this.props.name}</CellBody>
             <CellFooter>
               <Switch
-                checked={this.props.eventDate.get('checked') || false}
+                checked={checked}
                 onChange={() => {
                   this.props.dispatch(checkEventDate(this.props.eventDate));
+                  this.forceUpdate();
                 }}
               />
             </CellFooter>
@@ -83,14 +89,19 @@ class ParticipateDate extends React.Component {
 
   get availableList() {
     const participants = this.props.eventDate.get('eventParticipantList');
-    const elems = participants.map((participant, idx) => (
-      <FormCell radio key={idx}>
-        <CellBody>{participant.get('name')}</CellBody>
-        <CellFooter>
-          <Radio defaultChecked disabled />
-        </CellFooter>
-      </FormCell>
-    ));
+    const elems = participants.map((participant, idx) => {
+      if (participant.get('remove')) {
+        return null;
+      }
+      return (
+        <FormCell radio key={idx}>
+          <CellBody>{participant.get('name')}</CellBody>
+          <CellFooter>
+            <Radio defaultChecked disabled />
+          </CellFooter>
+        </FormCell>
+      );
+    });
     return (
       <div>
         <CellsTitle>有空的人</CellsTitle>
@@ -128,6 +139,7 @@ class ParticipateDate extends React.Component {
 ParticipateDate.propTypes = {
   eventDate: PropTypes.object,
   name: PropTypes.string,
+  userUuid: PropTypes.string,
   eventTitle: PropTypes.string,
   dispatch: PropTypes.func,
 };
