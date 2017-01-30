@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { Map, List } from 'immutable';
 import {
   Form,
   FormCell,
@@ -21,8 +22,12 @@ import {
   isCheckedDate,
 } from '../../utils';
 
+const eventDateHolder = Map({
+  timeInUnix: 0,
+  eventParticipantList: List([]),
+})
 const mapStateToProps = state => ({
-  eventDate: state.participate.get('currentEventDate'),
+  eventDate: state.participate.get('currentEventDate') || eventDateHolder,
   userUuid: state.participate.get('participantUserUuid'),
   eventTitle: state.participate.get('title'),
   name: state.participate.get('name'),

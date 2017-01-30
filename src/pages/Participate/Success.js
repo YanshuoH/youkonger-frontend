@@ -50,6 +50,6 @@ class Success extends React.Component {
 
 Success.propTypes = {
   dispatch: PropTypes.func,
-}
+};
 
 export default connect()(Success);

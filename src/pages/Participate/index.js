@@ -16,11 +16,15 @@ class Participate extends React.Component {
     // if submitted is set, should render the success page
     // otherwise, entry it is
     let content;
+    let key;
     if (this.props.currentEventDate && !this.props.submitted) {
+      key = 1;
       content = <Date />;
     } else if (!this.props.currentEventDate && this.props.submitted) {
+      key = 2;
       content = <Success />;
     } else {
+      key = 0;
       content = <Entry />;
     }
     return (
@@ -31,7 +35,9 @@ class Participate extends React.Component {
           transitionEnterTimeout={300}
           transitionLeaveTimeout={200}
         >
-          {content}
+          <div className="yk-container" key={key}>
+            {content}
+          </div>
         </ReactCSSTransitionGroup>
       </div>
     );
