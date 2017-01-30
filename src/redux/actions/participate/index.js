@@ -175,6 +175,7 @@ export function fetchEventParticipantUpsertApi() {
       name: participateState.get('name'),
       participantUserUuid: userUuid,
       eventParticipantList: eventParticipantsToPost,
+      eventUuid: participateState.get('uuid'),
     };
     console.log('Post data:', data);
     dispatch(fetchEventParticipantUpsertRequest());
