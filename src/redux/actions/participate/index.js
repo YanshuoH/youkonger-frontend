@@ -10,12 +10,13 @@ import {
   PARTICIPATION_UPSERT_SUCCESS,
   PARTICIPATION_UPSERT_FAILURE,
   API_EVENT_PARTICIPANT_UPSERT,
-  ParticipantUserCookieKey,
+  UserUUIDCookieKey,
 } from '../../../constants';
 import {
   fetchPost,
   isCheckedDate,
   setCookie,
+  getCookie,
 } from '../../../utils';
 
 export function onChangeNameInput(value) {
@@ -128,7 +129,7 @@ export function fetchEventParticipantUpsertRequest() {
 }
 
 export function fetchEventParticipantUpsertSuccess(event) {
-  setCookie(ParticipantUserCookieKey, event.participantUserUuid, 30);
+  setCookie(UserUUIDCookieKey, event.userUuid, 30);
   return {
     type: PARTICIPATION_UPSERT_SUCCESS,
     payload: {
@@ -152,7 +153,12 @@ export function fetchEventParticipantUpsertFailure(error) {
 export function fetchEventParticipantUpsertApi() {
   return (dispatch, getState) => {
     const participateState = getState().participate;
-    const userUuid = participateState.get('participantUserUuid');
+    const participantUserUuid = participateState.get('participantUserUuid');
+    let userUuid = participateState.get('userUuid');
+    if (userUuid === '') {
+      userUuid = getCookie(UserUUIDCookieKey);
+    }
+
     const eventDates = participateState.get('eventDateList');
     const eventParticipantsToPost = [];
 
@@ -160,11 +166,12 @@ export function fetchEventParticipantUpsertApi() {
       const d = eventDates.get(i);
       for (let j = 0; j < d.get('eventParticipantList').size; j++) {
         const p = d.get('eventParticipantList').get(j);
-        if (userUuid === p.get('participantUserUuid')) {
+        if (participantUserUuid === p.get('participantUserUuid')) {
           eventParticipantsToPost.push({
+            participantUserUuid,
+            userUuid,
             uuid: p.get('uuid'),
             eventDateUuid: d.get('uuid'),
-            participantUserUuid: p.get('participantUserUuid'),
             remove: p.get('remove'),
           });
           break;
@@ -173,7 +180,8 @@ export function fetchEventParticipantUpsertApi() {
     }
     const data = {
       name: participateState.get('name'),
-      participantUserUuid: userUuid,
+      participantUserUuid,
+      userUuid,
       eventParticipantList: eventParticipantsToPost,
       eventUuid: participateState.get('uuid'),
     };

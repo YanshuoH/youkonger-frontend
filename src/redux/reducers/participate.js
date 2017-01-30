@@ -32,6 +32,7 @@ export const initialState = fromJS({
     },
   ],
 
+  userUuid: '',
   participantUserUuid: '',
 
   // interactive fields
