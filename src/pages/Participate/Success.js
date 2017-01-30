@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import {
   Msg,
   Button,
 } from 'react-weui';
 import Clipboard from '../../components/Clipboard';
+import {
+  goBackAndEdit,
+} from '../../redux/actions/participate';
 
 class Success extends React.Component {
   get successContent() {
@@ -28,7 +32,7 @@ class Success extends React.Component {
         </Clipboard>
         <Button
           type="default"
-          onClick={() => { }}
+          onClick={() => { this.props.dispatch(goBackAndEdit()); }}
         >返回修改</Button>
       </div>
     );
@@ -44,4 +48,8 @@ class Success extends React.Component {
   }
 }
 
-export default Success;
+Success.propTypes = {
+  dispatch: PropTypes.func,
+}
+
+export default connect()(Success);

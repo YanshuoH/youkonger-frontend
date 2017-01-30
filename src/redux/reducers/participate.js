@@ -9,6 +9,7 @@ import {
   PARTICIPATION_UPSERT_REQUEST,
   PARTICIPATION_UPSERT_FAILURE,
   PARTICIPATION_UPSERT_SUCCESS,
+  PARTICIPATION_GO_BACK_AND_EDIT,
 } from '../../constants';
 
 /**
@@ -84,6 +85,11 @@ export default function reducer(state = initialState, action) {
       return state
         .set('submitted', true)
         .set('moveForward', true);
+    case PARTICIPATION_GO_BACK_AND_EDIT:
+      return state
+        .set('moveForward', false)
+        .set('submitted', false)
+        .delete('currentEventDate');
     default:
       return state;
   }

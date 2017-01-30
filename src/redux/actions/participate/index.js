@@ -10,6 +10,7 @@ import {
   PARTICIPATION_UPSERT_SUCCESS,
   PARTICIPATION_UPSERT_FAILURE,
   API_EVENT_PARTICIPANT_UPSERT,
+  PARTICIPATION_GO_BACK_AND_EDIT,
   UserUUIDCookieKey,
 } from '../../../constants';
 import {
@@ -94,7 +95,6 @@ export function checkEventDate(eventDate, eventDateIdx = -1) {
       } else {
         // set removed to false
         modifiedEventDate = eventDate.setIn(['eventParticipantList', idx, 'remove'], false);
-        console.log('updated removed to false');
       }
 
       dispatch({
@@ -194,5 +194,11 @@ export function fetchEventParticipantUpsertApi() {
       .catch((error) => {
         dispatch(fetchEventParticipantUpsertFailure(error));
       });
+  };
+}
+
+export function goBackAndEdit() {
+  return {
+    type: PARTICIPATION_GO_BACK_AND_EDIT,
   };
 }
