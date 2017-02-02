@@ -9,6 +9,7 @@
           "__INITIAL_STATE__",
           "__INITIAL_EVENT_STATE__",
           "__INITIAL_PARTICIPATE_STATE__",
+          "__INITIAL_ADMIN_STATE__",
           "__IS_SSR__"
         ]
       }

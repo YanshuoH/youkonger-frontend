@@ -6,6 +6,7 @@
     <title>有空儿</title>
     <script>
         window.__INITIAL_PARTICIPATE_STATE__ = JSON.parse("{{if .InitialParticipate}}{{ .InitialParticipate }}{{else}}{}{{end}}");
+        window.__INITIAL_ADMIN_STATE__ = JSON.parse("{{if .InitialAdmin}}{{ .InitialAdmin }}{{else}}{}{{end}}");
         window.__IS_SSR__ = {{.IsSSR}};
     </script>
 </head>

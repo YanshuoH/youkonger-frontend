@@ -15,6 +15,7 @@ import './styles/app.less';
 
 // initial states
 import { initialState as participateInitialState } from './redux/reducers/participate';
+import { initialState as adminInitialState } from './redux/reducers/admin';
 
 // moment localization
 moment.locale('zh-cn');
@@ -23,10 +24,14 @@ const initialState = window.__INITIAL_STATE__;
 const participate = participateInitialState.mergeDeep(
   fromJS(window.__INITIAL_PARTICIPATE_STATE__)
 );
+const admin = adminInitialState.mergeDeep(
+  fromJS(window.__INITIAL_ADMIN_STATE__)
+);
 const store = configureStore(
   Object.assign({},
     initialState,
     { participate },
+    { admin }
   )
 );
 

@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Redirect } from 'react-router';
 import Home from '../pages/Home';
 import Edit from '../pages/Edit';
+import Admin from '../pages/Admin';
 import Participate from '../pages/Participate';
 import Layout from '../containers/Layout';
-import Clipboard from '../components/Clipboard';
 
 export default () => (
   <Route component={Layout}>
@@ -20,7 +20,7 @@ export default () => (
         }
       }}
     />
-    <Route path="/test" component={Clipboard} />
+    <Route path="/event/:uuid/admin/:hash" component={Admin} />
     <Redirect from="*" to="/" />
   </Route>
 );

@@ -19,9 +19,11 @@ import {
   onChangeNameInput,
   onBlurNameInput,
   fetchEventParticipantUpsertApi,
+  fetchParticipantUserUpsertApi,
 } from '../../redux/actions/participate';
 import {
-  countCheckedDate
+  countCheckedDate,
+  retrieveParticipantUserUUIDs,
 } from '../../utils';
 
 const mapStateToProps = state => ({
@@ -30,6 +32,7 @@ const mapStateToProps = state => ({
   description: state.participate.get('description'),
   location: state.participate.get('location'),
   dateList: state.participate.get('eventDateList'),
+  unavailableList: state.participate.get('unavailableParticipantList'),
   nameErr: state.participate.get('nameErr'),
   name: state.participate.get('name'),
   userUuid: state.participate.get('participantUserUuid'),
@@ -41,6 +44,7 @@ class Participate extends React.Component {
     this.onChangeNameInput = this.onChangeNameInput.bind(this);
     this.onBlurNameInput = this.onBlurNameInput.bind(this);
     this.onSubmitButtonClick = this.onSubmitButtonClick.bind(this);
+    this.onUnavailableButtonClick = this.onUnavailableButtonClick.bind(this);
   }
 
   onChangeNameInput(e) {
@@ -58,11 +62,30 @@ class Participate extends React.Component {
     this.props.dispatch(fetchEventParticipantUpsertApi());
   }
 
+  onUnavailableButtonClick() {
+    if (this.props.fetching) {
+      return;
+    }
+    this.props.dispatch(fetchParticipantUserUpsertApi());
+  }
+
   get optionalFields() {
     let key = 0;
     return [
       (<div className="yk-page-desc" key={key++}>{this.props.description}</div>),
       (<div className="yk-page-desc" key={key++}>{this.props.location}</div>)
+    ];
+  }
+
+  get countFields() {
+    let key = 0;
+    return [
+      (<div className="yk-page-desc" key={key++}>
+        {`已参加人数: ${retrieveParticipantUserUUIDs(this.props.dateList).length}`}
+      </div>),
+      (<div className="yk-page-desc" key={key++}>
+        {`无法参加人数: ${this.props.unavailableList.size}`}
+      </div>),
     ];
   }
 
@@ -95,12 +118,15 @@ class Participate extends React.Component {
     const checkedDateCount = countCheckedDate(this.props.userUuid, this.props.dateList);
     const submitBtnContent = this.props.fetching ?
       (<span><Icon value="loading" />发送中</span>) : ('有空');
+    const unavailableBtnContent = this.props.fetching ?
+      (<span><Icon value="loading" />发送中</span>) : ('抱歉无法参加');
+
     return (
       <div>
         <div className="yk-title-container">
           <div className="yk-page-title">{this.props.title}</div>
           {this.optionalFields}
-          <div className="yk-page-desc">已参加人数: @TODO</div>
+          {this.countFields}
         </div>
         {this.nameInput}
         <Selection />
@@ -112,7 +138,13 @@ class Participate extends React.Component {
           >
             {submitBtnContent}
           </Button>
-          <Button type="default">抱歉无法参加</Button>
+          <Button
+            type="default"
+            onClick={this.onUnavailableButtonClick}
+            disabled={this.props.fetching}
+          >
+            {unavailableBtnContent}
+          </Button>
         </ButtonArea>
       </div>
     );
@@ -125,6 +157,7 @@ Participate.propTypes = {
   title: PropTypes.string,
   userUuid: PropTypes.string,
   dateList: PropTypes.object,
+  unavailableList: PropTypes.object,
   description: PropTypes.string,
   location: PropTypes.string,
   nameErr: PropTypes.bool,

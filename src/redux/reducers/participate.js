@@ -32,6 +32,7 @@ export const initialState = fromJS({
       eventParticipantList: []
     },
   ],
+  unavailableParticipantList: [],
 
   userUuid: '',
   participantUserUuid: '',

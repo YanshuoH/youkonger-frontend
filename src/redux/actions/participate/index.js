@@ -10,6 +10,7 @@ import {
   PARTICIPATION_UPSERT_SUCCESS,
   PARTICIPATION_UPSERT_FAILURE,
   API_EVENT_PARTICIPANT_UPSERT,
+  API_PARTICIPANT_USER_UPSERT,
   PARTICIPATION_GO_BACK_AND_EDIT,
   UserUUIDCookieKey,
 } from '../../../constants';
@@ -193,6 +194,33 @@ export function fetchEventParticipantUpsertApi() {
       })
       .catch((error) => {
         dispatch(fetchEventParticipantUpsertFailure(error));
+      });
+  };
+}
+
+export function fetchParticipantUserUpsertApi(unavailable = true) {
+  return (dispatch, getState) => {
+    const participateState = getState().participate;
+    const participantUserUuid = participateState.get('participantUserUuid');
+    let userUuid = participateState.get('userUuid');
+    if (userUuid === '') {
+      userUuid = getCookie(UserUUIDCookieKey);
+    }
+    const data = {
+      name: participateState.get('name'),
+      participantUserUuid,
+      userUuid,
+      eventUuid: participateState.get('uuid'),
+      unavailable,
+    };
+
+    dispatch(fetchEventParticipantUpsertRequest());
+    fetchPost(API_PARTICIPANT_USER_UPSERT, JSON.stringify(data))
+      .then((resp) => {
+        dispatch(fetchEventParticipantUpsertSuccess(resp));
+      })
+      .catch((error) => {
+        dispatch(fetchEventParticipantUpsertFailure(error))
       });
   };
 }
