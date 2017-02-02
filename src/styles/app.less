@@ -1,5 +1,6 @@
 @import './colors';
 @import './variables';
+@import './mixins';
 
 body {
   margin: 0;
@@ -57,6 +58,10 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+}
+
+.yk-bold {
+  font-weight: bold;
 }
 
 .pageSlide-enter {
@@ -123,4 +128,25 @@ body {
   top: 50%;
   right: 15px;
   margin-top: -4px
+}
+
+@arrow-size: 12px;
+@arrow-weight: 4px;
+@secondary-font-color: @grey60;
+.arrow-left {
+  &:after {
+    .setArrow(left, @arrow-size, @secondary-font-color, @arrow-weight);
+    content: " ";
+    position: absolute;
+    top: 50%;
+    margin-top: -(@arrow-size + @arrow-weight) / 2;
+    left: @spacing;
+    display: inline-block;
+  }
+}
+
+.nav-title {
+  flex: 1;
+  font-size: 17px;
+  text-align: center;
 }

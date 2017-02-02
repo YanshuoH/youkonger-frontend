@@ -2,15 +2,19 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import ResultList from './ResultList';
 import Spacing from '../../components/Spacing';
-import { retrieveParticipantUserUUIDs } from '../../utils';
+import {
+  retrieveParticipantUserUUIDs,
+  retrieveDDayFromEventDates,
+  formatUnixSecondToDate,
+} from '../../utils';
 
 const mapStateToProps = state => ({
   title: state.admin.get('title'),
   description: state.admin.get('description'),
   location: state.admin.get('location'),
-  eventDates: state.admin.get('eventDateList'),
   unavailableList: state.admin.get('unavailableParticipantList'),
   participantUUIDs: retrieveParticipantUserUUIDs(state.admin.get('eventDateList')),
+  dDay: retrieveDDayFromEventDates(state.admin.get('eventDateList')),
 });
 class Entry extends React.Component {
 
@@ -34,11 +38,25 @@ class Entry extends React.Component {
     ];
   }
 
+  get dDayField() {
+    if (this.props.dDay) {
+      return (
+        <div className="yk-page-desc">
+          {`${formatUnixSecondToDate(this.props.dDay.get('timeInUnix'))}`}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     return (
       <div>
         <div className="yk-title-container">
           <div className="yk-page-title">{this.props.title}</div>
+          {this.dDayField}
+          <Spacing px={5} />
           {this.optionalFields}
           {this.countFields}
         </div>
@@ -53,9 +71,9 @@ Entry.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   location: PropTypes.string,
-  eventDates: PropTypes.object,
   unavailableList: PropTypes.object,
   participantUUIDs: PropTypes.array,
-}
+  dDay: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(Entry);

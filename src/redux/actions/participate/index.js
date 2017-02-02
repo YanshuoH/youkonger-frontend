@@ -220,7 +220,7 @@ export function fetchParticipantUserUpsertApi(unavailable = true) {
         dispatch(fetchEventParticipantUpsertSuccess(resp));
       })
       .catch((error) => {
-        dispatch(fetchEventParticipantUpsertFailure(error))
+        dispatch(fetchEventParticipantUpsertFailure(error));
       });
   };
 }

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * Given userUuid and eventDate, should check if user already in eventParticipantList
  * @param userUuid {string}
@@ -32,4 +34,16 @@ export function countCheckedDate(userUuid, eventDateList) {
   }
 
   return count;
+}
+
+/**
+ * Given unix second, should return a formatted date string
+ * @param timeInUnix {number}
+ * @returns {string}
+ */
+export function formatUnixSecondToDate(timeInUnix) {
+  return moment
+    .unix(timeInUnix)
+    .utcOffset(8)
+    .format('YYYY年MM月DD日');
 }

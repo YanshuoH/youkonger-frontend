@@ -1,32 +1,7 @@
-@import '../../styles/colors';
-@import '../../styles/mixins';
-@import '../../styles/variables';
-
 .yk-participate-caption {
   width: 100%;
   height: 80px;
   display : flex;
   align-items : center;
   justify-content: center;
-}
-
-@arrow-size: 12px;
-@arrow-weight: 4px;
-@secondary-font-color: @grey60;
-.arrow-left {
-  &:after {
-    .setArrow(left, @arrow-size, @secondary-font-color, @arrow-weight);
-    content: " ";
-    position: absolute;
-    top: 50%;
-    margin-top: -(@arrow-size + @arrow-weight) / 2;
-    left: @spacing;
-    display: inline-block;
-  }
-}
-
-.nav-title {
-  flex: 1;
-  font-size: 17px;
-  text-align: center;
 }

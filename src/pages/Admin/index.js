@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 import Entry from './Entry';
+import Detail from './Detail';
+import Success from './Success';
 
+const mapStateToProps = state => ({
+  moveForward: state.admin.get('moveForward'),
+  currentEventDate: state.admin.get('currentEventDate'),
+  submitted: state.admin.get('submitted'),
+});
 class Admin extends React.Component {
   get content() {
-    return (<Entry />);
+    let key = 0;
+    let elem = <Detail />;
+    if (this.props.currentEventDate === undefined && !this.props.submitted) {
+      key++;
+      elem = <Entry />;
+    } else if (this.props.submitted) {
+      key++;
+      elem = <Success />;
+    }
+
+    return { key, elem };
   }
 
   render() {
+    const { key, elem } = this.content;
     return (
       <div>
         <ReactCSSTransitionGroup
@@ -17,8 +35,8 @@ class Admin extends React.Component {
           transitionEnterTimeout={300}
           transitionLeaveTimeout={200}
         >
-          <div className="yk-container">
-            {this.content}
+          <div className="yk-container" key={key}>
+            {elem}
           </div>
         </ReactCSSTransitionGroup>
       </div>
@@ -26,4 +44,10 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin;
+Admin.propTypes = {
+  moveForward: PropTypes.bool,
+  currentEventDate: PropTypes.object,
+  submitted: PropTypes.bool,
+};
+
+export default connect(mapStateToProps)(Admin);

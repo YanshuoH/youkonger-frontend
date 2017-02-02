@@ -19,6 +19,11 @@ export function retrieveParticipantUserUUIDs(eventDateList) {
   return participantUserUUIDs;
 }
 
+/**
+ * Given eventDateList, should retrieve the eventDate(s) who have the most participants
+ * @param eventDateList {Immutable.List}
+ * @returns {Immutable.List}
+ */
 export function retrieveMaxParticipantEventDates(eventDateList) {
   let maxVal = 0;
   for (let i = 0; i < eventDateList.size; i++) {
@@ -33,4 +38,19 @@ export function retrieveMaxParticipantEventDates(eventDateList) {
   }
 
   return eventDateList.filter(ed => ed.get('eventParticipantList').size === maxVal);
+}
+
+/**
+ * Given eventDateList, should retrieve the D-Day
+ * @param eventDateList
+ * @returns {Immutable.Map|null}
+ */
+export function retrieveDDayFromEventDates(eventDateList) {
+  for (let i = 0; i < eventDateList.size; i++) {
+    if (eventDateList.get(i).get('isDDay')) {
+      return eventDateList.get(i);
+    }
+  }
+
+  return null;
 }

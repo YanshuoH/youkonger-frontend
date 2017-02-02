@@ -25,7 +25,7 @@ import {
 const eventDateHolder = Map({
   timeInUnix: 0,
   eventParticipantList: List([]),
-})
+});
 const mapStateToProps = state => ({
   eventDate: state.participate.get('currentEventDate') || eventDateHolder,
   userUuid: state.participate.get('participantUserUuid'),
