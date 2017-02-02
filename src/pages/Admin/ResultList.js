@@ -45,7 +45,7 @@ class ResultList extends React.Component {
 
     return this.props.dateList.map((eventDate) => {
       const maxDateIdx = maxDates.findIndex(date => date.get('uuid') === eventDate.get('uuid'));
-      const checked = maxDateIdx > -1 ?
+      const checked = maxDateIdx > -1 && !this.props.dDay ?
         (<Radio className="yk-admin-result-checked" name="radio1" value="1" defaultChecked />)
         : null;
       const klass = classnames('yk-admin-result-cell', {
