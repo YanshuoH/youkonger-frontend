@@ -4,6 +4,8 @@ import {
   ADMIN_FETCH_EVENT_DATE_DDAY_REQUEST,
   ADMIN_FETCH_EVENT_DATE_DDAY_SUCCESS,
   ADMIN_FETCH_EVENT_DATE_DDAY_FAILURE,
+  ADMIN_SHOW_ACTION_SHEET,
+  ADMIN_HIDE_ACTION_SHEET,
   API_EVENT_DATE_DDAY,
 } from '../../../constants';
 import { fetchPost } from '../../../utils';
@@ -53,7 +55,7 @@ export function fetchApiDDayFailure(error) {
   };
 }
 
-export function fethApiDDay() {
+export function fetchApiDDay() {
   return (dispatch, getState) => {
     const adminState = getState().admin;
     const uuid = adminState.get('uuid');
@@ -73,5 +75,23 @@ export function fethApiDDay() {
       .catch((error) => {
         dispatch(fetchApiDDayFailure(error));
       });
+  };
+}
+
+export function showActionSheet() {
+  return {
+    type: ADMIN_SHOW_ACTION_SHEET,
+    payload: {
+      showActionSheet: true,
+    }
+  };
+}
+
+export function hideActionSheet() {
+  return {
+    type: ADMIN_HIDE_ACTION_SHEET,
+    payload: {
+      showActionSheet: false,
+    }
   };
 }

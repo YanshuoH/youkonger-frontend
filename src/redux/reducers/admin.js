@@ -5,6 +5,8 @@ import {
   ADMIN_FETCH_EVENT_DATE_DDAY_REQUEST,
   ADMIN_FETCH_EVENT_DATE_DDAY_SUCCESS,
   ADMIN_FETCH_EVENT_DATE_DDAY_FAILURE,
+  ADMIN_SHOW_ACTION_SHEET,
+  ADMIN_HIDE_ACTION_SHEET,
 } from '../../constants';
 
 export const initialState = fromJS({
@@ -24,6 +26,7 @@ export const initialState = fromJS({
   moveForward: true,
 
   currentEventDate: undefined,
+  showActionSheet: false,
 });
 
 export default function reducer(state = initialState, action) {
@@ -46,6 +49,9 @@ export default function reducer(state = initialState, action) {
         .set('submitted', action.payload.submitted)
         .set('moveForward', true);
     }
+    case ADMIN_SHOW_ACTION_SHEET:
+    case ADMIN_HIDE_ACTION_SHEET:
+      return state.set('showActionSheet', action.payload.showActionSheet);
     default:
       return state;
   }

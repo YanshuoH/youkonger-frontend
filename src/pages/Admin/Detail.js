@@ -12,12 +12,16 @@ import {
   Radio,
   Button,
   ButtonArea,
+  ActionSheet,
 } from 'react-weui';
 import NavBar from '../../components/NavBar';
 import Spacing from '../../components/Spacing';
+import { retrieveDDayFromEventDates } from '../../utils';
 import {
   exitEventDateDetail,
-  fethApiDDay,
+  fetchApiDDay,
+  hideActionSheet,
+  showActionSheet,
 } from '../../redux/actions/admin';
 
 /**
@@ -34,16 +38,42 @@ const mapStateToProps = state => ({
   eventDate: state.admin.get('currentEventDate') || eventDateHolder,
   unavailableList: state.admin.get('unavailableParticipantList'),
   eventTitle: state.admin.get('title'),
+  dDay: retrieveDDayFromEventDates(state.admin.get('eventDateList')),
+  showActionSheet: state.admin.get('showActionSheet'),
 });
 class Detail extends React.Component {
   constructor(props) {
     super(props);
 
     this.onConfirmButtonClick = this.onConfirmButtonClick.bind(this);
+    this.state = {
+      menus: [
+        {
+          label: '修改聚会日期可能会影响到已经收到通知的成员',
+          className: 'yk-actionsheet-desc',
+        },
+        {
+          label: '修改聚会日期并分享',
+          className: 'yk-actionsheet-warning',
+          onClick: () => { this.props.dispatch(fetchApiDDay()); },
+        }
+      ],
+      actions: [
+        {
+          label: '取消',
+          onClick: () => { this.props.dispatch(hideActionSheet()); },
+        },
+      ],
+    };
   }
 
   onConfirmButtonClick() {
-    this.props.dispatch(fethApiDDay());
+    if (this.props.dDay && this.props.dDay.get('uuid') !== this.props.eventDate.get('uuid')) {
+      this.props.dispatch(showActionSheet());
+      return;
+    }
+
+    this.props.dispatch(fetchApiDDay());
   }
 
   get nav() {
@@ -124,6 +154,17 @@ class Detail extends React.Component {
     );
   }
 
+  get actionSheet() {
+    return (
+      <ActionSheet
+        menus={this.state.menus}
+        actions={this.state.actions}
+        show={this.props.showActionSheet}
+        onRequestClose={() => { this.props.dispatch(hideActionSheet()); }}
+      />
+    );
+  }
+
   render() {
     return (
       <div className="yk-container-with-nav">
@@ -135,6 +176,7 @@ class Detail extends React.Component {
         {this.props.unavailableList.isEmpty() ? null : this.unavailableList}
         <Spacing />
         {this.confirmButton}
+        {this.actionSheet}
       </div>
     );
   }
@@ -144,6 +186,8 @@ Detail.propTypes = {
   eventDate: PropTypes.object,
   eventTitle: PropTypes.string,
   unavailableList: PropTypes.object,
+  dDay: PropTypes.object,
+  showActionSheet: PropTypes.bool,
   dispatch: PropTypes.func,
 };
 
