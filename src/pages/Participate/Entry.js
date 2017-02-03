@@ -15,6 +15,7 @@ import {
 import Spacing from '../../components/Spacing';
 import Selection from './Selection';
 import '../../styles/app.less';
+import { NameLengthConstraint } from '../../constants';
 import {
   onChangeNameInput,
   onBlurNameInput,
@@ -89,10 +90,24 @@ class Participate extends React.Component {
     ];
   }
 
+  get nameTip() {
+    if (this.props.name.length > NameLengthConstraint) {
+      return (
+        <div className="weui-agree">
+          <span className="weui-agree__text">
+            *名字过长, 请保持在{NameLengthConstraint}字之内
+          </span>
+        </div>
+      );
+    }
+    return null;
+  }
+
   get nameInput() {
+    const nameTip = this.nameTip;
     return (
       <Form>
-        <FormCell warn={this.props.nameErr}>
+        <FormCell warn={this.props.nameErr || !!nameTip}>
           <CellHeader>
             <Label>你的名字</Label>
           </CellHeader>
@@ -105,7 +120,7 @@ class Participate extends React.Component {
               value={this.props.name}
             />
           </CellBody>
-          {this.props.nameErr ?
+          {this.props.nameErr || !!nameTip ?
             (<CellFooter><Icon value="warn" /></CellFooter>) : null
           }
         </FormCell>
@@ -129,6 +144,7 @@ class Participate extends React.Component {
           {this.countFields}
         </div>
         {this.nameInput}
+        {this.nameTip}
         <Selection />
         <Spacing />
         <ButtonArea>

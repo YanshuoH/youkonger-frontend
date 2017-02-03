@@ -13,6 +13,7 @@ import {
   Badge,
 } from 'react-weui';
 import Spacing from '../../components/Spacing';
+import { NameLengthConstraint } from '../../constants';
 import {
   showEventDateDetail,
   checkEventDate,
@@ -25,7 +26,9 @@ import {
 const mapStateToProps = state => ({
   dates: state.participate.get('eventDateList'),
   userUuid: state.participate.get('participantUserUuid'),
-  enable: state.participate.get('name') !== '' && !state.participate.get('nameErr'),
+  enable: state.participate.get('name') !== ''
+    && state.participate.get('name').length < NameLengthConstraint
+    && !state.participate.get('nameErr'),
 });
 class Selection extends React.Component {
   constructor(props) {
