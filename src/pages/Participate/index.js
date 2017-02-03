@@ -4,14 +4,21 @@ import { connect } from 'react-redux';
 import Entry from './Entry';
 import Date from './Date';
 import Success from './Success';
+import Finish from '../Finish';
 
 const mapStateToProps = state => ({
   currentEventDate: state.participate.get('currentEventDate'),
   submitted: state.participate.get('submitted'),
   moveForward: state.participate.get('moveForward'),
+  finished: state.participate.get('finished'),
 });
 class Participate extends React.Component {
   render() {
+    // if finished, redirect page to Finish
+    if (this.props.finished) {
+      return (<Finish />);
+    }
+
     // if currentEventDate is set, should render the date detail page
     // if submitted is set, should render the success page
     // otherwise, entry it is
@@ -48,6 +55,7 @@ Participate.propTypes = {
   currentEventDate: PropTypes.object,
   moveForward: PropTypes.bool,
   submitted: PropTypes.bool,
+  finished: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(Participate);
