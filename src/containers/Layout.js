@@ -16,7 +16,7 @@ class Layout extends React.PureComponent {
   render() {
     let tabBar = null;
 
-    const childrenArr = Children.toArray(this.props.children)
+    const childrenArr = Children.toArray(this.props.children);
     for (let i = 0; i < childrenArr.length; i++) {
       const child = childrenArr[i];
       if (child.type
