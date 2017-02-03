@@ -14,10 +14,11 @@ import {
 
 class Success extends React.Component {
   get successContent() {
+    const title = this.props.title ? this.props.title : '完成';
     return (
       <Msg
         type="success"
-        title="完成"
+        title={title}
         description="点击右上角的分享网页并发送给好友"
       />
     );
@@ -82,6 +83,7 @@ class Success extends React.Component {
 Success.propTypes = {
   event: PropTypes.object.isRequired,
   dDay: PropTypes.object.isRequired,
+  title: PropTypes.string,
 };
 
 export default Success;

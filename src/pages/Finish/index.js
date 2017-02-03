@@ -17,6 +17,7 @@ class Success extends React.Component {
         <Finish
           event={this.props.event}
           dDay={this.props.dDay}
+          title="已由发起者确定聚会日期"
         />
       </div>
     );
