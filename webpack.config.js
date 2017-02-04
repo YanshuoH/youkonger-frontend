@@ -4,10 +4,11 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var isProd = process.env.NODE_ENV === 'prod';
+var isProd = process.env.NODE_ENV === 'production';
 var plugins = [
   new webpack.DefinePlugin({
-    __DEBUG__: !isProd
+    __DEBUG__: !isProd,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
   }),
   new ExtractTextPlugin('weui.min.css'),
   new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
@@ -49,7 +50,7 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   entry: {
     js: ['./app.js'],
-    vendor: ['react']
+    vendor: ['react', 'isomorphic-fetch']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

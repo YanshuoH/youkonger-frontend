@@ -6,7 +6,7 @@ env.use_ssh_config = True
 
 @task
 def build():
-    local("npm run dist")
+    local("yarn run dist")
 
 @task
 def deploy():

@@ -9,12 +9,13 @@
   "scripts": {
     "dev": "webpack-dev-server --progress",
     "watch": "webpack --progress --colors --watch",
-    "dist": "rm -rf dist && NODE_ENV=prod webpack"
+    "dist": "rm -rf dist && NODE_ENV=production webpack"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "clipboard": "^1.5.16",
     "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "moment": "^2.17.1",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
