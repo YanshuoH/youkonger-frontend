@@ -72,9 +72,9 @@ class ButtonClipboard extends React.Component {
   get inputBoard() {
     return (
       <Form>
-        <FormCell>
+        <FormCell vcode>
           <CellBody>
-            <Input type="text" defaultValue={this.props.value} readOnly />
+            <Input type="text" defaultValue={this.props.value} readOnly disabled />
           </CellBody>
           <CellFooter>
             <Button
